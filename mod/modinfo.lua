@@ -1,8 +1,8 @@
 -- This information tells other players more about the mod
 name = "Tame Tallbirds"
-description = "Full-grown Tallbirds raised by the player will no longer be hostile."
-author = "Phoenix37"
-version = "1.0"
+description = "Full-grown Tallbirds raised by the player will be friendly."
+author = "Keidence"
+version = "0.1"
 
 -- This is the URL name of the mod's thread on the forum; the part after the ? and before the first & in the url
 -- Example:
