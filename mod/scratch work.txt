@@ -1,0 +1,52 @@
+-- Change the event handler on the "growup" state in the tallbird state graph. It will now
+-- choose which type of bird to spawn.
+function PostInitSgTeenbirdGrowUpEvents(inst)
+	print("entering PostInitSgTeenbirdGrowUpEvents")
+	--local state = assert( inst.sg.sg.states["growup"], "Stategraph " .. inst.sg.sg.name .. " has no state growup!")
+	local state = inst.sg.sg.states["growup"]
+	
+	local old_events = state.events
+	state.events =
+	{
+		GLOBAL.EventHandler("animover", function(inst)
+			print("entering modified event handler")
+			--if inst.components.follow and inst.components.follower.leader then
+			--	-- We are a teen following a player, spawn a tame adult
+			--	print("Event Handler - Trying to spawn Tame Tallbird")
+			--	inst.userfunctions.SpawnTameAdult(inst)
+			--else
+			--	-- We are a wild bird, spawn normal adult
+			--	print("Event Handler - Trying to spawn normal Tallbird")
+			--	inst.userfunctions.SpawnAdult(inst)
+			--end
+		end),
+	}
+end
+
+AddPrefabPostInit("teenbird", PostInitSgTeenbirdGrowUpEvents)
+
+
+-- Spawn function to create a Tame Tallbird instance given a mature teenbird.
+function SpawnTameAdult(inst)
+	print("tame tallbird - SpawnTameAdult")
+
+    --local tamebird = SpawnPrefab("tametallbird")
+	local tamebird = SpawnPrefab("spider")
+    tamebird.Transform:SetPosition(inst.Transform:GetWorldPosition())
+    tamebird.sg:GoToState("idle")
+
+    if inst.components.follower.leader then
+        tamebird.components.follower:SetLeader(inst.components.follower.leader)
+    end
+
+    inst:Remove()
+end
+
+
+-- Add SpawnTameAdult to the userfunctions table in smallbird.lua
+function PostInitSetSpawnTameBirdFunction (inst)
+	print("entering PostInitSetSpawnTameBirdFunction")
+	inst.userfunctions.SpawnTameAdult = SpawnTameAdult
+end
+
+AddPrefabPostInit("teenbird",PostInitSetSpawnTameBirdFunction)
