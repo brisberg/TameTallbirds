@@ -1,36 +1,7 @@
 -- Add a prefabpostinit to teenbirds to make then select which type of adult they should grow up into.
 
-local function SpawnTameAdult(inst)
-	--print("TameTallbirds - SpawnTameAdult called")
-
-  local tamebird = GLOBAL.SpawnPrefab("tametallbird")
-	-- local tamebird = GLOBAL.SpawnPrefab("spider")
-  tamebird.Transform:SetPosition(inst.Transform:GetWorldPosition())
-  tamebird.sg:GoToState("idle")
-
-  if inst.components.follower and inst.components.follower.leader then
-    tamebird.components.follower:SetLeader(inst.components.follower.leader)
-  end
-
-  inst:Remove()
-end
-
-function tweak_teenbird(inst)
-  local SpawnNormalAdult = inst.userfunctions.SpawnAdult
-  function inst.userfunctions.SpawnAdult(inst)
-    if
-      inst.components.follower
-      and inst.components.follower.leader
-      and inst.components.follower.leader:HasTag("player")
-    then
-      -- We are a teen following a player, spawn a tame adult
-      SpawnTameAdult(inst)
-    else
-      We are a wild bird, spawn normal adult
-      SpawnNormalAdult(inst)
-    end
-  end
-end
+print('Loading tallbird mod')
+tweak_teenbird = GLOBAL.require('tweaks/tweakteenbird')
 
 AddPrefabPostInit("teenbird", tweak_teenbird)
 ------------------------------------------------------
@@ -57,18 +28,20 @@ GLOBAL.TUNING.TAME_TALLBIRD_STARVE_KILL_TIME = 240
 
 ------------------------------------------------------
 -- For Reference
-	--TALLBIRD_HEALTH = 400,
-	--TALLBIRD_DAMAGE = 50,
-	--TALLBIRD_ATTACK_PERIOD = 2,
-	--TALLBIRD_ATTACK_RANGE = 3,
-	--TALLBIRD_TARGET_DIST = 8,
-	--TALLBIRD_DEFEND_DIST = 12,
+--TALLBIRD_HEALTH = 400,
+--TALLBIRD_DAMAGE = 50,
+--TALLBIRD_ATTACK_PERIOD = 2,
+--TALLBIRD_ATTACK_RANGE = 3,
+--TALLBIRD_TARGET_DIST = 8,
+--TALLBIRD_DEFEND_DIST = 12,
 
-	--TEENBIRD_DAMAGE_PECK = 2,
-	--TEENBIRD_PECK_PERIOD = 4,
-	--TEENBIRD_HUNGER = 60,
-	--TEENBIRD_STARVE_TIME = total_day_time * 1,
-	--TEENBIRD_STARVE_KILL_TIME = 240,
+--TEENBIRD_DAMAGE_PECK = 2,
+--TEENBIRD_PECK_PERIOD = 4,
+--TEENBIRD_HUNGER = 60,
+--TEENBIRD_STARVE_TIME = total_day_time * 1,
+--TEENBIRD_STARVE_KILL_TIME = 240,
+
+-- print(TUNING.SMALLBIRD_HATCH_TIME)
 
 ------------------------------------------------------
 -- Speed smallbird growth for testing purposes
