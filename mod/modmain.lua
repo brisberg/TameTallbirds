@@ -3,7 +3,7 @@ print('Loading tallbird mod')
 
 _G = GLOBAL
 TUNING = _G.TUNING
-STRINGS = _G.Strings
+STRINGS = _G.STRINGS
 
 tweak_teenbird = _G.require('tweaks/tweakteenbird')
 

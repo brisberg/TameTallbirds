@@ -1,4 +1,3 @@
-
 local function SpawnTameAdult(inst)
     --print("TameTallbirds - SpawnTameAdult called")
 

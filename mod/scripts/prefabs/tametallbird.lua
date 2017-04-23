@@ -1,4 +1,4 @@
-local brain = require "brains/smallbirdbrain"
+local brain = require "brains/tametallbirdbrain"
 
 local WAKE_TO_FOLLOW_DISTANCE = 10
 local SLEEP_NEAR_LEADER_DISTANCE = 7
@@ -30,6 +30,31 @@ local function ShouldSleep(inst)
     return DefaultSleepTest(inst) and not inst.components.hunger:IsStarving(inst) and inst.components.follower:IsNearLeader(SLEEP_NEAR_LEADER_DISTANCE)
 end
 
+local function FollowPlayer(inst)
+    print("tametallbird - FollowPlayer")
+
+    if inst.components.follower.leader == nil then
+        local player = GetPlayer()
+        print 'Follow Player first if'
+        print(inst.components.follower.leader)
+        if player and player.components.leader then
+            print("   adding follower")
+            player.components.leader:AddFollower(inst)
+            print(inst.components.follower.leader)
+        end
+    end
+end
+
+local function UnfollowPlayer(inst, player)
+    --print("tametallbird - UnfollowPlayer")
+
+    if inst.components.follower and inst.components.follower.leader == player then
+        if player.components.leader then
+            player.components.leader:RemoveFollower(inst)
+        end
+    end
+end
+
 local function CanEatTest(inst, item)
     -- deprecated
     --print("tametallbird - CanEatTest", inst.name, item.components.edible.foodtype, item, item.prefab)
@@ -46,7 +71,7 @@ local function ShouldAcceptItem(inst, item)
 end
 
 local function OnGetItemFromPlayer(inst, giver, item)
-    --print("tametallbird - OnGetItemFromPlayer")
+    print("tametallbird - OnGetItemFromPlayer")
 
     if inst.components.sleeper then
         inst.components.sleeper:WakeUp()
@@ -54,10 +79,14 @@ local function OnGetItemFromPlayer(inst, giver, item)
 
     --I eat food
     if item.components.edible then
+        print("   item edible")
         if inst.components.combat.target and inst.components.combat.target == giver then
             inst.components.combat:SetTarget(nil)
-            -- inst:FollowPlayer(inst)
         end
+        print('   tametallbird OnGetItem')
+        print(inst.components.follower.leader)
+        FollowPlayer(inst)
+        print(inst.components.follower.leader)
         if inst.components.eater:Eat(item) then
             --print("   yummy!")
             -- yay!?
@@ -74,26 +103,6 @@ end
 local function OnRefuseItem(inst, item)
     --print("tametallbird - OnRefuseItem")
     --inst.sg:GoToState("refuse")
-end
-
-local function FollowPlayer(inst, player)
-    --print("tametallbird - FollowPlayer")
-
-	if inst.components.follower.leader == nil then
-		-- local player = GetPlayer()
-		if player and player.components.leader then
-			--print("   adding follower")
-			player.components.leader:AddFollower(inst)
-		end
-	end
-end
-
-local function UnfollowPlayer(inst)
-    --print("tametallbird - UnfollowPlayer")
-
-    if inst.components.follower.leader then
-        inst.components.followers.leader:RemoveFollower(inst)
-    end
 end
 
 local function SetBirdAttackDefault(inst)
@@ -138,12 +147,14 @@ local function KeepTarget(inst, target)
 end
 
 local function OnAttacked(inst, data)
-    --print("tametallbird - OnAttacked !!!")
+    print("tametallbird - OnAttacked !!!")
 
-    if data.attacker ~= nil and (data.attacker == inst.components.follower.leader or data.attacker:HasTag("player")) then
-        --print("  what did I ever do to you!?")
-        -- well i was just annoyed, but now you done pissed me off!
-        SetBirdAttackDefault(inst)
+    if data.attacker ~= nil and data.attacker:HasTag("player") then
+        print("  toggling follow")
+        if inst.components.follower.leader == data.attacker then
+            print("    unfollow")
+            return inst.userfunctions.UnfollowPlayer(inst, data.attacker)
+        end
     end
 
     inst.components.combat:SuggestTarget(data.attacker)
@@ -177,19 +188,8 @@ local function OnHealthDelta(inst, data)
     end
 end
 
-local function create_common(inst)
-    --print("tametallbird - create_common")
-
-    --inst = inst or CreateEntity()
-
-    
-
-    --print("tametallbird - create_common END")
-    return inst
-end
-
 local function create_tame_tallbird()
-    --print("tametallbird - create_tame_tallbird")
+    print("tametallbird - create_tame_tallbird")
 
     local inst = CreateEntity()
 
