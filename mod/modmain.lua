@@ -1,16 +1,18 @@
 -- Add a prefabpostinit to teenbirds to make then select which type of adult they should grow up into.
-
 print('Loading tallbird mod')
-tweak_teenbird = GLOBAL.require('tweaks/tweakteenbird')
+
+_G = GLOBAL
+TUNING = _G.TUNING
+STRINGS = _G.Strings
+
+tweak_teenbird = _G.require('tweaks/tweakteenbird')
 
 AddPrefabPostInit("teenbird", tweak_teenbird)
 ------------------------------------------------------
 
 -- Define a new prefab for Tame Tallbirds
 PrefabFiles = {'tametallbird'}
-_G = GLOBAL
-TUNING = _G.TUNING
-GLOBAL.STRINGS.NAMES.TAMETALLBIRD = 'Tallbird'
+STRINGS.NAMES.TAMETALLBIRD = 'Tallbird'
 
 ------------------------------------------------------
 -- Tuning Values for Tame Tallbirds
