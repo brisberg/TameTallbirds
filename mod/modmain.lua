@@ -14,6 +14,11 @@ AddPrefabPostInit("teenbird", tweak_teenbird)
 -- Define a new prefab for Tame Tallbirds
 PrefabFiles = {'tametallbird'}
 STRINGS.NAMES.TAMETALLBIRD = 'Tame Tallbird'
+STRINGS.CHARACTERS.GENERIC.DESCRIBE.TAMETALLBIRD = {
+	GENERIC = "Very tall and very loyal.",
+	HUNGRY = "Better get you some food, Big Guy.",
+	STARVING = "Careful Big Guy, just don't eat me!",
+}
 
 ------------------------------------------------------
 -- Tuning Values for Tame Tallbirds
