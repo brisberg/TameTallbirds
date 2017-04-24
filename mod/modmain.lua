@@ -1,12 +1,10 @@
--- Add a prefabpostinit to teenbirds to make then select which type of adult they should grow up into.
-print('Loading tallbird mod')
-
 _G = GLOBAL
 TUNING = _G.TUNING
 STRINGS = _G.STRINGS
 require = _G.require
 
-tweak_teenbird = _G.require('tweaks/tweakteenbird')
+-- Add a prefabpostinit to teenbirds to make then select which type of adult they should grow up into.
+tweak_teenbird = require('tweaks/tweakteenbird')
 
 AddPrefabPostInit("teenbird", tweak_teenbird)
 ------------------------------------------------------
@@ -54,8 +52,6 @@ TUNING.TEENBIRD_GROW_TIME = TUNING.TOTAL_DAY_TIME * GetModConfigData("ADULT_GROW
 --TEENBIRD_HUNGER = 60,
 --TEENBIRD_STARVE_TIME = total_day_time * 1,
 --TEENBIRD_STARVE_KILL_TIME = 240,
-
--- print(TUNING.SMALLBIRD_HATCH_TIME)
 
 ------------------------------------------------------
 -- Speed smallbird growth for testing purposes

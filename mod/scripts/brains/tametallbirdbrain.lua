@@ -1,7 +1,6 @@
 require "behaviours/chaseandattack"
 require "behaviours/faceentity"
 require "behaviours/follow"
-require "behaviours/leash"
 require "behaviours/standstill"
 require "behaviours/wander"
 
@@ -41,9 +40,9 @@ end
 local function CanSeeFood(inst)
     local notags = {"FX", "NOCLICK", "DECOR","INLIMBO"}
     local target = FindEntity(inst, SEE_FOOD_DIST, function(item) return inst.components.eater:CanEat(item) end, nil, notags)
-    if target then
-        print("CanSeeFood", inst.name, target.name)
-    end
+    -- if target then
+    --     print("CanSeeFood", inst.name, target.name)
+    -- end
     return target
 end
 

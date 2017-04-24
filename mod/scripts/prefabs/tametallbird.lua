@@ -31,14 +31,12 @@ local function ShouldSleep(inst)
 end
 
 local function FollowPlayer(inst)
-    print("tametallbird - FollowPlayer")
+    -- print("tametallbird - FollowPlayer")
 
     if inst.components.follower.leader == nil then
         local player = GetPlayer()
-        print 'Follow Player first if'
         print(inst.components.follower.leader)
         if player and player.components.leader then
-            print("   adding follower")
             inst.stayLoc = nil
             player.components.leader:AddFollower(inst)
             print(inst.components.follower.leader)
@@ -47,17 +45,12 @@ local function FollowPlayer(inst)
 end
 
 local function UnfollowPlayer(inst, player)
-    print("tametallbird - UnfollowPlayer")
+    -- print("tametallbird - UnfollowPlayer")
 
     if inst.components.follower and inst.components.follower.leader == player then
-        print('  my leader == player')
         if player.components.leader then
-            print('   unfollow player has leader')
             inst.stayLoc = Vector3(inst.Transform:GetWorldPosition())
-            print('   set stayLoc')
-            print(inst.stayLoc)
             player.components.leader:RemoveFollower(inst)
-            print('   removed leader')
         end
     end
 end
@@ -78,7 +71,7 @@ local function ShouldAcceptItem(inst, item)
 end
 
 local function OnGetItemFromPlayer(inst, giver, item)
-    print("tametallbird - OnGetItemFromPlayer")
+    -- print("tametallbird - OnGetItemFromPlayer")
 
     if inst.components.sleeper then
         inst.components.sleeper:WakeUp()
@@ -86,14 +79,10 @@ local function OnGetItemFromPlayer(inst, giver, item)
 
     --I eat food
     if item.components.edible then
-        print("   item edible")
         if inst.components.combat.target and inst.components.combat.target == giver then
             inst.components.combat:SetTarget(nil)
         end
-        print('   tametallbird OnGetItem')
-        print(inst.components.follower.leader)
         FollowPlayer(inst)
-        print(inst.components.follower.leader)
         if inst.components.eater:Eat(item) then
             --print("   yummy!")
             -- yay!?
@@ -160,17 +149,13 @@ local function KeepTarget(inst, target)
 end
 
 local function OnAttacked(inst, data)
-    print("tametallbird - OnAttacked !!!")
+    -- print("tametallbird - OnAttacked !!!")
 
     if data.attacker ~= nil and data.attacker:HasTag("player") then
-        print("  toggling follow")
         if inst.components.follower.leader == data.attacker then
-            print("    attacker is leader")
             if data.attacker.components.talker then
-                print("       attacker has talker")
                 data.attacker.components.talker:Say("Stay here!")
             end
-            print("   unfollow")
             return inst.userfunctions.UnfollowPlayer(inst, data.attacker)
         end
     end
@@ -219,7 +204,7 @@ local function OnLoad(inst, data)
 end
 
 local function create_tame_tallbird()
-    print("tametallbird - create_tame_tallbird")
+    -- print("tametallbird - create_tame_tallbird")
 
     local inst = CreateEntity()
 

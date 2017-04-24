@@ -37,7 +37,7 @@ local states=
         tags = {"idle", "canrotate"},
 
         onenter = function(inst, pushanim)
-        	print('SGtametallbird - idle')
+			-- print('SGtametallbird - idle')
             inst.Physics:Stop()
             inst.AnimState:PlayAnimation("idle", true)
             inst.sg:SetTimeout(4 + 4*math.random())
@@ -68,7 +68,7 @@ local states=
         tags = {"idle", "canrotate"},
 
         onenter = function(inst)
-        	print('SGtametallbird - idle_blink')
+			-- print('SGtametallbird - idle_blink')
             inst.Physics:Stop()
             inst.AnimState:PlayAnimation("idle_blink")
         end,
@@ -97,7 +97,7 @@ local states=
         tags = {"idle"},
 
         onenter = function(inst)
-        	print('SGtametallbird - idle_peep')
+        	-- print('SGtametallbird - idle_peep')
             inst.Physics:Stop()
             inst.AnimState:PlayAnimation("meep")
         end,
@@ -126,7 +126,7 @@ local states=
         tags = {"busy"},
 
         onenter = function(inst)
-        	print('SGtametallbird - death')
+        	-- print('SGtametallbird - death')
             inst.SoundEmitter:PlaySound("dontstarve/creatures/tallbird/death")
             inst.AnimState:PlayAnimation("death")
             inst.components.locomotor:StopMoving()
@@ -141,7 +141,7 @@ local states=
         tags = {"busy", "canrotate"},
 
         onenter = function(inst)
-        	print('SGtametallbird - taunt')
+        	-- print('SGtametallbird - taunt')
             inst.Physics:Stop()
             inst.AnimState:PlayAnimation("call")
             if inst.components.combat and inst.components.combat.target then
@@ -166,7 +166,7 @@ local states=
         tags = {"attack", "busy"},
 
         onenter = function(inst, cb)
-        	print('SGtametallbird - attack')
+        	-- print('SGtametallbird - attack')
             inst.Physics:Stop()
             inst.components.combat:StartAttack()
             inst.AnimState:PlayAnimation("atk_pre")
@@ -225,7 +225,7 @@ local states=
         tags = {"busy"},
 
         onenter = function(inst)
-        	print('SGtametallbird - hit')
+        	-- print('SGtametallbird - hit')
             inst.SoundEmitter:PlaySound("dontstarve/creatures/tallbird/hurt")
             inst.AnimState:PlayAnimation("hit")
             inst.Physics:Stop()
@@ -241,7 +241,7 @@ local states=
         tags = {"busy", "canrotate"},
 
         onenter = function(inst)
-        	print('SGtametallbird - eat')
+        	-- print('SGtametallbird - eat')
             inst.Physics:Stop()
             inst.AnimState:PlayAnimation("eat")
             inst.SoundEmitter:PlaySound("dontstarve/creatures/smallbird/scratch_ground")
