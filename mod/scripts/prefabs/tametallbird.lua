@@ -46,11 +46,17 @@ local function FollowPlayer(inst)
 end
 
 local function UnfollowPlayer(inst, player)
-    --print("tametallbird - UnfollowPlayer")
+    print("tametallbird - UnfollowPlayer")
 
     if inst.components.follower and inst.components.follower.leader == player then
+        print('  my leader == player')
         if player.components.leader then
+            print('   unfollow player has leader')
+            inst.stayLoc = inst.Transform:GetWorldPosition()
+            print('   set stayLoc')
+            print(inst.stayLoc)
             player.components.leader:RemoveFollower(inst)
+            print('   removed leader')
         end
     end
 end

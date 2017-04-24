@@ -1,13 +1,16 @@
 require "behaviours/chaseandattack"
-require "behaviours/wander"
 require "behaviours/faceentity"
 require "behaviours/follow"
+require "behaviours/leash"
 require "behaviours/standstill"
+require "behaviours/wander"
 
 
 local MIN_FOLLOW_DIST = 2
 local MAX_FOLLOW_DIST = 9
-local MAX_IDLE_WANDER_DIST = 3
+local MAX_IDLE_WANDER_DIST = 6
+local LEASH_RETURN_DIST = 10
+local LEASH_MAX_DIST = 20
 local TARGET_FOLLOW_DIST = (MAX_FOLLOW_DIST+MIN_FOLLOW_DIST)/2
 
 local MAX_CHASE_TIME = 10
@@ -45,6 +48,10 @@ local function CanSeeFood(inst)
 end
 
 local function FindFoodAction(inst)
+	if inst.sg:HasStateTag("busy") then
+		return
+	end
+
     local target = CanSeeFood(inst)
     if target then
         return BufferedAction(inst, target, ACTIONS.EAT)
@@ -52,7 +59,7 @@ local function FindFoodAction(inst)
 end
 
 local function GetTraderFn(inst)
-    return (not inst:HasTag("springbird")) and (inst.components.follower.leader and inst.components.trader:IsTryingToTradeWithMe(inst.components.follower.leader)) and inst.components.follower.leader or nil
+	return FindEntity(inst, TRADE_DIST, function(target) return inst.components.trader:IsTryingToTradeWithMe(target) end, {"player"})
 end
 
 local function KeepTraderFn(inst, target)
@@ -82,8 +89,7 @@ function TameTallBirdBrain:OnStart()
             ParallelNodeAny {
                 WaitNode(math.random()*.5),
                 PriorityNode {
-                    StandStill(self.inst, ShouldStandStill),
-                    Follow(self.inst, function() return self.inst.components.follower.leader end, MIN_FOLLOW_DIST, TARGET_FOLLOW_DIST, MAX_FOLLOW_DIST),
+                	Follow(self.inst, function() return self.inst.components.follower.leader end, MIN_FOLLOW_DIST, TARGET_FOLLOW_DIST, MAX_FOLLOW_DIST),
                 },
             },
             DoAction(self.inst, function() return FindFoodAction(self.inst) end),
@@ -98,23 +104,20 @@ function TameTallBirdBrain:OnStart()
             ParallelNodeAny {
                 WaitNode(1 + math.random()*2),
                 PriorityNode {
-                    StandStill(self.inst, ShouldStandStill),
-                    Follow(self.inst, function() return self.inst.components.follower.leader end, MIN_FOLLOW_DIST, TARGET_FOLLOW_DIST, MAX_FOLLOW_DIST),
+                	Follow(self.inst, function() return self.inst.components.follower.leader end, MIN_FOLLOW_DIST, TARGET_FOLLOW_DIST, MAX_FOLLOW_DIST),
                 },
             },
             DoAction(self.inst, function() return FindFoodAction(self.inst) end),
         },
-        PriorityNode {
-            StandStill(self.inst, ShouldStandStill),
-            Follow(self.inst, function() return self.inst.components.follower.leader end, MIN_FOLLOW_DIST, TARGET_FOLLOW_DIST, MAX_FOLLOW_DIST),
-        },
+        Follow(self.inst, function() return self.inst.components.follower.leader end, MIN_FOLLOW_DIST, TARGET_FOLLOW_DIST, MAX_FOLLOW_DIST),
         SequenceNode{
         	ConditionNode(function() return self.inst.components.follower.leader end, "HasLeader"),
-        	Wander(self.inst, function() if self.inst.components.follower.leader then return Vector3(self.inst.components.follower.leader.Transform:GetWorldPosition()) end end, MAX_FOLLOW_DIST- 1, {minwalktime=.5, randwalktime=.5, minwaittime=6, randwaittime=3}),
+        	Wander(self.inst, function() if self.inst.components.follower.leader then return Vector3(self.inst.components.follower.leader.Transform:GetWorldPosition()) end end, MAX_FOLLOW_DIST-1, {minwalktime=.5, randwalktime=.5, minwaittime=6, randwaittime=3}),
     	},
-        Wander(self.inst, Vector3(self.inst.Transform:GetWorldPosition()), MAX_IDLE_WANDER_DIST- 1, {minwalktime=.5, randwalktime=.5, minwaittime=6, randwaittime=3}),
+    	Leash(self.inst, function() if self.inst.stayLoc then return Vector3(self.inst.stayLoc) end end, LEASH_MAX_DIST, LEASH_RETURN_DIST),
+        Wander(self.inst, function () if self.inst.stayLoc then return Vector3(self.inst.stayLoc) end end, MAX_FOLLOW_DIST-1, {minwalktime=.5, randwalktime=.5, minwaittime=6, randwaittime=3}),
     },.25)
     self.bt = BT(self.inst, root)
- end
+end
 
 return TameTallBirdBrain

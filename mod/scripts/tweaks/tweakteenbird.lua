@@ -4,6 +4,7 @@ local function SpawnTameAdult(inst)
     local tamebird = SpawnPrefab("tametallbird")
     -- local tamebird = SpawnPrefab("spider")
     tamebird.Transform:SetPosition(inst.Transform:GetWorldPosition())
+    tamebird.stayLoc = inst.Transform:GetWorldPosition()
     tamebird.sg:GoToState("idle")
 
     if inst.components.follower and inst.components.follower.leader then
