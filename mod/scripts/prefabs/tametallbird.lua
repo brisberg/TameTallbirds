@@ -164,7 +164,12 @@ local function OnAttacked(inst, data)
     if data.attacker ~= nil and data.attacker:HasTag("player") then
         print("  toggling follow")
         if inst.components.follower.leader == data.attacker then
-            print("    unfollow")
+            print("    attacker is leader")
+            if data.attacker.components.talker then
+                print("       attacker has talker")
+                data.attacker.components.talker:Say("Stay here!")
+            end
+            print("   unfollow")
             return inst.userfunctions.UnfollowPlayer(inst, data.attacker)
         end
     end
