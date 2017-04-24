@@ -191,7 +191,7 @@ local states=
 
     State{
         name = "peck",
-        tags = {"attack", "canrotate"},
+        tags = {"attack", "busy", "canrotate"},
 
         onenter = function(inst, cb)
             inst.Physics:Stop()

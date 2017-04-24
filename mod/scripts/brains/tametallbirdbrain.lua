@@ -42,15 +42,15 @@ local function CanSeeFood(inst)
     local notags = {"FX", "NOCLICK", "DECOR","INLIMBO"}
     local target = FindEntity(inst, SEE_FOOD_DIST, function(item) return inst.components.eater:CanEat(item) end, nil, notags)
     if target then
-        --print("CanSeeFood", inst.name, target.name)
+        print("CanSeeFood", inst.name, target.name)
     end
     return target
 end
 
 local function FindFoodAction(inst)
-	if inst.sg:HasStateTag("busy") then
-		return
-	end
+	-- if inst.sg:HasStateTag("busy") then
+	-- 	return
+	-- end
 
     local target = CanSeeFood(inst)
     if target then
@@ -64,6 +64,11 @@ end
 
 local function KeepTraderFn(inst, target)
     return inst.components.trader:IsTryingToTradeWithMe(target)
+end
+
+local function GetStayLocation(inst)
+	-- print('GetStayLocation', inst.stayLoc:_toString())
+	return inst.stayLoc
 end
 
 local function SpringMod(amt)
@@ -92,7 +97,7 @@ function TameTallBirdBrain:OnStart()
                 	Follow(self.inst, function() return self.inst.components.follower.leader end, MIN_FOLLOW_DIST, TARGET_FOLLOW_DIST, MAX_FOLLOW_DIST),
                 },
             },
-            DoAction(self.inst, function() return FindFoodAction(self.inst) end),
+            DoAction(self.inst, FindFoodAction),
         },
         SequenceNode{
             ConditionNode(function() return self.inst.components.combat.target ~= nil end, "HasTarget"),
@@ -107,15 +112,14 @@ function TameTallBirdBrain:OnStart()
                 	Follow(self.inst, function() return self.inst.components.follower.leader end, MIN_FOLLOW_DIST, TARGET_FOLLOW_DIST, MAX_FOLLOW_DIST),
                 },
             },
-            DoAction(self.inst, function() return FindFoodAction(self.inst) end),
+            DoAction(self.inst, FindFoodAction),
         },
         Follow(self.inst, function() return self.inst.components.follower.leader end, MIN_FOLLOW_DIST, TARGET_FOLLOW_DIST, MAX_FOLLOW_DIST),
         SequenceNode{
         	ConditionNode(function() return self.inst.components.follower.leader end, "HasLeader"),
         	Wander(self.inst, function() if self.inst.components.follower.leader then return Vector3(self.inst.components.follower.leader.Transform:GetWorldPosition()) end end, MAX_FOLLOW_DIST-1, {minwalktime=.5, randwalktime=.5, minwaittime=6, randwaittime=3}),
     	},
-    	Leash(self.inst, function() if self.inst.stayLoc then return Vector3(self.inst.stayLoc) end end, LEASH_MAX_DIST, LEASH_RETURN_DIST),
-        Wander(self.inst, function () if self.inst.stayLoc then return Vector3(self.inst.stayLoc) end end, MAX_FOLLOW_DIST-1, {minwalktime=.5, randwalktime=.5, minwaittime=6, randwaittime=3}),
+        Wander(self.inst, GetStayLocation, MAX_FOLLOW_DIST-1, {minwalktime=.5, randwalktime=.5, minwaittime=6, randwaittime=3}),
     },.25)
     self.bt = BT(self.inst, root)
 end

@@ -39,6 +39,7 @@ local function FollowPlayer(inst)
         print(inst.components.follower.leader)
         if player and player.components.leader then
             print("   adding follower")
+            inst.stayLoc = nil
             player.components.leader:AddFollower(inst)
             print(inst.components.follower.leader)
         end
@@ -52,7 +53,7 @@ local function UnfollowPlayer(inst, player)
         print('  my leader == player')
         if player.components.leader then
             print('   unfollow player has leader')
-            inst.stayLoc = inst.Transform:GetWorldPosition()
+            inst.stayLoc = Vector3(inst.Transform:GetWorldPosition())
             print('   set stayLoc')
             print(inst.stayLoc)
             player.components.leader:RemoveFollower(inst)
@@ -108,7 +109,7 @@ end
 
 local function OnRefuseItem(inst, item)
     --print("tametallbird - OnRefuseItem")
-    --inst.sg:GoToState("refuse")
+    -- inst.sg:GoToState("refuse")
 end
 
 local function SetBirdAttackDefault(inst)
@@ -202,6 +203,18 @@ local function OnHealthDelta(inst, data)
         end
 
         inst.components.follower:SetLeader(nil)
+    end
+end
+
+local function OnSave(inst, data)
+    if inst.stayLoc then
+        data.stayLoc = inst.stayLoc
+    end
+end
+
+local function OnLoad(inst, data)
+    if data and data.stayLoc then
+        inst.stayLoc = data.stayLoc
     end
 end
 
@@ -305,6 +318,9 @@ local function create_tame_tallbird()
 
     inst:AddComponent("lootdropper")
     inst.components.lootdropper:SetLoot({"meat"}, {"meat"})
+
+    inst.OnSave = OnSave
+    inst.OnLoad = OnLoad
 
     --print("tametallbird - create_tame_tallbird END")
     return inst
