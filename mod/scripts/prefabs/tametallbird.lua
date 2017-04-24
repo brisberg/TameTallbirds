@@ -64,7 +64,7 @@ end
 local function CanEatTest(inst, item)
     -- deprecated
     --print("tametallbird - CanEatTest", inst.name, item.components.edible.foodtype, item, item.prefab)
-    local canEat = (item.components.edible.foodtype == "SEEDS") or (item.prefab == "berries")
+    local canEat = not (item.prefab == "tallbirdegg" or item.prefab == "tallbirdegg_cracked" or item.prefab == "tallbirdegg_cooked")
     --print("   canEat?", canEat)
     return canEat
 end
@@ -127,11 +127,17 @@ end
 
 local function OnNewTarget(inst, data)
     --print("tametallbird - OnNewTarget", data.target, inst.components.follower.leader)
-    if data.target and data.target:HasTag("player") then
-        -- combat component will restore target to player, give them the benefit of the doubt and use peck instead of attack to begin with
-        SetBirdAttackPeck(inst)
-    else
-        SetBirdAttackDefault(inst)
+    if data.target then
+        if data.target:HasTag("tallbird") or data.target:HasTag("smallbird") or data.target:HasTag("springbird") then
+            inst.components.components.combat:SetTarget(nil)
+        end
+
+        if data.target:HasTag("player") then
+            -- combat component will restore target to player, give them the benefit of the doubt and use peck instead of attack to begin with
+            SetBirdAttackPeck(inst)
+        else
+            SetBirdAttackDefault(inst)
+        end
     end
 end
 
@@ -254,7 +260,7 @@ local function create_tame_tallbird()
     inst:AddComponent("eater")
     inst.components.eater:SetOmnivore()
     inst.components.eater:SetOnEatFn(OnEat)
-    --inst.components.eater:SetCanEatTestFn(CanEatTest)
+    inst.components.eater:SetCanEatTestFn(CanEatTest)
 
     inst:AddComponent("sleeper")
     inst.components.sleeper:SetResistance(3)
