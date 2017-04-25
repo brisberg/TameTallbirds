@@ -71,12 +71,11 @@ local function GetStayLocation(inst)
 end
 
 local function SpringMod(amt)
-    -- if GetSeasonManager() and (GetSeasonManager():IsSpring() or GetSeasonManager():IsGreenSeason()) then
-    --     return amt * TUNING.SPRING_COMBAT_MOD
-    -- else
-    --     return amt
-    -- end
-    return amt
+    if IsDLCEnabled(GLOBAL.REIGN_OF_GIANTS) and GetSeasonManager() and (GetSeasonManager():IsSpring() or GetSeasonManager():IsGreenSeason()) then
+        return amt * TUNING.SPRING_COMBAT_MOD
+    else
+        return amt
+    end
 end
 
 local TameTallBirdBrain = Class(Brain, function(self, inst)

@@ -2,6 +2,7 @@ _G = GLOBAL
 TUNING = _G.TUNING
 STRINGS = _G.STRINGS
 require = _G.require
+IsDLCEnabled = GLOBAL.IsDLCEnabled
 
 -- Add a prefabpostinit to teenbirds to make then select which type of adult they should grow up into.
 tweak_teenbird = require('tweaks/tweakteenbird')
