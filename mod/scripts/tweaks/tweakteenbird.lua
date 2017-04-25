@@ -10,7 +10,7 @@ local function SpawnTameAdult(inst)
     if inst.components.follower and inst.components.follower.leader then
         tamebird.components.follower:SetLeader(inst.components.follower.leader)
     end
-
+    inst.components.follower.leader.components.leader:RemoveFollower(inst)
     inst:Remove()
 end
 
@@ -28,6 +28,12 @@ function tweak_teenbird(inst)
             -- We are a wild bird, spawn normal adult
             SpawnNormalAdult(inst)
         end
+    end
+
+    local OldSpawnTeen = inst.userfunctions.SpawnTeen
+    function inst.userfunctions.SpawnTeen(inst)
+        OldSpawnTeen(inst)
+        inst.components.follower.leader.components.leader:RemoveFollower(inst)
     end
 end
 

@@ -7,6 +7,11 @@ require = _G.require
 tweak_teenbird = require('tweaks/tweakteenbird')
 
 AddPrefabPostInit("teenbird", tweak_teenbird)
+
+-- Add a prefabpostinit to smallbirds to remove as follower when they grow up
+tweak_smallbird = require('tweaks/tweaksmallbird')
+
+AddPrefabPostInit("smallbird", tweak_smallbird)
 ------------------------------------------------------
 
 -- Define a new prefab for Tame Tallbirds
