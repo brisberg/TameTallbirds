@@ -66,7 +66,7 @@ end
 local function ShouldAcceptItem(inst, item)
     --print("tametallbird - ShouldAcceptItem", inst.name, item.name)
     if item.components.edible and inst.components.hunger and inst.components.eater then
-        return inst.components.eater:CanEat(item) and inst.components.hunger:GetPercent() < .9
+        return inst.components.eater:CanEat(item)
     end
 end
 
