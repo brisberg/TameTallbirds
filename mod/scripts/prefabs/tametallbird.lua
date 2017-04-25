@@ -132,19 +132,24 @@ local function OnNewTarget(inst, data)
 end
 
 local function Retarget(inst)
-    local notags = {"FX", "NOCLICK","INLIMBO"}
+    local notags = {"FX", "NOCLICK", "INLIMBO", "aquadic", "springbird", "smallbird", "tallbird"}
+    local yestags = {"monster", "pig", "character"}
     return FindEntity(inst, TUNING.TAME_TALLBIRD_TARGET_DIST, function(guy)
-    if inst.components.combat:CanTarget(guy)  and (not guy.LightWatcher or guy.LightWatcher:IsInLight()) then
-        if inst.components.follower.leader ~= nil then
-            return (guy:HasTag("monster") or (guy == inst.components.follower.leader and guy:HasTag("player") and inst.components.hunger and inst.components.hunger:IsStarving()))
-        else
-            return guy:HasTag("monster")
+        if inst.components.combat:CanTarget(guy)  and (not guy.LightWatcher or guy.LightWatcher:IsInLight()) then
+            if inst.components.follower.leader ~= nil then
+                return (guy:HasTag("monster") or (guy == inst.components.follower.leader and guy:HasTag("player") and inst.components.hunger and inst.components.hunger:IsStarving()))
+            else
+                return guy:HasTag("monster")
+            end
         end
-    end
-  end)
+    end, nil, notags, yestags)
 end
 
 local function KeepTarget(inst, target)
+    if target:HasTag("aquatic") then
+        return false
+    end
+
     return inst.components.combat:CanTarget(target) and (not target.LightWatcher or target.LightWatcher:IsInLight())
 end
 
@@ -216,17 +221,19 @@ local function create_tame_tallbird()
     inst.AnimState:Hide("beakfull")
 
     inst:AddTag("animal")
+    inst:AddTag("largecreature")
     inst:AddTag("companion")
-    inst:AddTag("character")
     inst:AddTag("tallbird")
-    -- Adding teenbird tag for now so the SGtallbird works correctly
-    inst:AddTag("teenbird")
     inst:AddTag("tametallbird")
 
     inst.entity:AddSoundEmitter()
     inst.entity:AddDynamicShadow()
 
     MakeCharacterPhysics(inst, 10, .5)
+
+    if IsDLCEnabled(GLOBAL.CAPY_DLC) then
+        MakePoisonableCharacter(inst)
+    end
 
     inst.Physics:SetCollisionGroup(COLLISION.CHARACTERS)
     inst.Physics:ClearCollisionMask()

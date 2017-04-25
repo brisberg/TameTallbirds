@@ -8,8 +8,6 @@ require "behaviours/wander"
 local MIN_FOLLOW_DIST = 2
 local MAX_FOLLOW_DIST = 9
 local MAX_IDLE_WANDER_DIST = 6
-local LEASH_RETURN_DIST = 10
-local LEASH_MAX_DIST = 20
 local TARGET_FOLLOW_DIST = (MAX_FOLLOW_DIST+MIN_FOLLOW_DIST)/2
 
 local MAX_CHASE_TIME = 10
@@ -71,8 +69,10 @@ local function GetStayLocation(inst)
 end
 
 local function SpringMod(amt)
-    if IsDLCEnabled(GLOBAL.REIGN_OF_GIANTS) and GetSeasonManager() and (GetSeasonManager():IsSpring() or GetSeasonManager():IsGreenSeason()) then
-        return amt * TUNING.SPRING_COMBAT_MOD
+	if GetSeasonManager() then
+	    if (IsDLCEnabled(GLOBAL.REIGN_OF_GIANTS) and GetSeasonManager():IsSpring()) or (IsDLCEnabled(GLOBAL.CAPY_DLC) and GetSeasonManager():IsGreenSeason()) then
+	        return amt * TUNING.SPRING_COMBAT_MOD
+	    end
     else
         return amt
     end
