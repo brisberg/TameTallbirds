@@ -8,9 +8,10 @@ local function SpawnTameAdult(inst)
     tamebird.sg:GoToState("idle")
 
     if inst.components.follower and inst.components.follower.leader then
-        tamebird.components.follower:SetLeader(inst.components.follower.leader)
+        local leader = inst.components.follower.leader
+        tamebird.components.follower:SetLeader(leader)
+        leader.components.leader:RemoveFollower(inst)
     end
-    inst.components.follower.leader.components.leader:RemoveFollower(inst)
     inst:Remove()
 end
 
