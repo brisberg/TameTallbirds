@@ -37,7 +37,9 @@ local function FollowPlayer(inst)
         local player = GetPlayer()
         print(inst.components.follower.leader)
         if player and player.components.leader then
-            inst.stayLoc = nil
+            if inst.components.knownLocations then
+                inst.components.knownLocations:ForgetLocation("StayLocation")
+            end
             player.components.leader:AddFollower(inst)
             print(inst.components.follower.leader)
         end
@@ -49,7 +51,9 @@ local function UnfollowPlayer(inst, player)
 
     if inst.components.follower and inst.components.follower.leader == player then
         if player.components.leader then
-            inst.stayLoc = Vector3(inst.Transform:GetWorldPosition())
+            if inst.components.knownLocations then
+                inst.components.knownLocations:RememberLocation("StayLocation", Vector3(inst.Transform:GetWorldPosition()))
+            end
             player.components.leader:RemoveFollower(inst)
         end
     end
@@ -196,18 +200,6 @@ local function OnHealthDelta(inst, data)
     end
 end
 
-local function OnSave(inst, data)
-    if inst.stayLoc then
-        data.stayLoc = inst.stayLoc
-    end
-end
-
-local function OnLoad(inst, data)
-    if data and data.stayLoc then
-        inst.stayLoc = data.stayLoc
-    end
-end
-
 local function create_tame_tallbird()
     -- print("tametallbird - create_tame_tallbird")
 
@@ -267,6 +259,8 @@ local function create_tame_tallbird()
 
     inst:AddComponent("follower")
 
+    inst:AddComponent("knownLocations")
+
     inst:AddComponent("eater")
     inst.components.eater:SetOmnivore()
     inst.components.eater:SetOnEatFn(OnEat)
@@ -310,9 +304,6 @@ local function create_tame_tallbird()
 
     inst:AddComponent("lootdropper")
     inst.components.lootdropper:SetLoot({"meat"}, {"meat"})
-
-    inst.OnSave = OnSave
-    inst.OnLoad = OnLoad
 
     --print("tametallbird - create_tame_tallbird END")
     return inst
