@@ -72,7 +72,7 @@ end
 
 local function SpringMod(amt)
     if GetSeasonManager() then
-        if (IsDLCEnabled(GLOBAL.REIGN_OF_GIANTS) and GetSeasonManager():IsSpring()) or (IsDLCEnabled(GLOBAL.CAPY_DLC) and GetSeasonManager():IsGreenSeason()) then
+        if (IsDLCEnabled(REIGN_OF_GIANTS) and GetSeasonManager():IsSpring()) or (IsDLCEnabled(CAPY_DLC) and GetSeasonManager():IsGreenSeason()) then
             return amt * TUNING.SPRING_COMBAT_MOD
         end
     else

@@ -223,7 +223,7 @@ local function create_tame_tallbird()
 
     MakeCharacterPhysics(inst, 10, .5)
 
-    if IsDLCEnabled(GLOBAL.CAPY_DLC) then
+    if IsDLCEnabled(CAPY_DLC) then
         MakePoisonableCharacter(inst)
     end
 
