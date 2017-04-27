@@ -20,7 +20,7 @@ description = "Full-grown Tallbirds raised by the player will be friendly."
 
 -- Have feedback, suggestions, or found a bug? Submit an issue on Github or open a pull request.
 -- GitHub: https://github.com/brisberg/TameTallbirds/issues
--- Steam: http://steamcommunity.com/workshop/filedetails/discussion/176714085/1318836262647423632/
+-- If you don't have a Github account you can post in the pinned discussions below.
 
 -- Next: Converting the mod to work with Don't Starve Together!
 
