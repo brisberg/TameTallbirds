@@ -229,8 +229,18 @@ local function create_tame_tallbird()
 
     MakeCharacterPhysics(inst, 10, .5)
 
-    if IsDLCEnabled(CAPY_DLC) then
-        MakePoisonableCharacter(inst)
+    if TheSim:GetGameID() == "DST" then
+        inst.AddNetwork()
+
+        inst.entity:SetPristine()
+
+        if not TheWorld.ismastersim then
+            return inst
+        end
+    else
+        if IsDLCEnabled(CAPY_DLC) then
+            MakePoisonableCharacter(inst)
+        end
     end
 
     inst.Physics:SetCollisionGroup(COLLISION.CHARACTERS)

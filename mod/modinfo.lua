@@ -40,6 +40,7 @@ reign_of_giants_compatible = true
 shipwrecked_compatible = true
 
 api_version = 6
+api_version_dst = 10
 --------------------------------------------------
 ---- Config
 --------------------------------------------------

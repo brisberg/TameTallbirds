@@ -70,16 +70,6 @@ local function GetStayLocation(inst)
     end
 end
 
-local function SpringMod(amt)
-    if GetSeasonManager() then
-        if (IsDLCEnabled(REIGN_OF_GIANTS) and GetSeasonManager():IsSpring()) or (IsDLCEnabled(CAPY_DLC) and GetSeasonManager():IsGreenSeason()) then
-            return amt * TUNING.SPRING_COMBAT_MOD
-        end
-    else
-        return amt
-    end
-end
-
 local TameTallBirdBrain = Class(Brain, function(self, inst)
     Brain._ctor(self, inst)
 end)
@@ -106,7 +96,7 @@ function TameTallBirdBrain:OnStart()
         SequenceNode{
             ConditionNode(function() return self.inst.components.combat.target ~= nil end, "HasTarget"),
             WaitNode(math.random()*.9),
-            ChaseAndAttack(self.inst, SpringMod(MAX_CHASE_TIME)),
+            ChaseAndAttack(self.inst, MAX_CHASE_TIME),
         },
         SequenceNode{
             ConditionNode(function() return IsHungry(self.inst) and CanSeeFood(self.inst) end, "SeesFoodToEat"),
