@@ -16,7 +16,7 @@ description = "Full-grown Tallbirds raised by the player will be friendly."
 
 -- Punch the bird once to make it guard an area, give it food to cause it to follow you again.
 
--- NOTE: Becareful of using Tame Tallbirds with other mods that add player companions. Attacking your birds to cause them to stay put may cause them to fight your other companions.
+-- NOTE: Be careful of using Tame Tallbirds with other mods that add player companions. Attacking your birds to cause them to stay put may cause them to fight your other companions.
 
 -- Have feedback, suggestions, or found a bug? Submit an issue on Github or open a pull request.
 -- GitHub: https://github.com/brisberg/TameTallbirds/issues

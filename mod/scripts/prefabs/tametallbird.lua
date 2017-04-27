@@ -123,7 +123,7 @@ local function OnNewTarget(inst, data)
     --print("tametallbird - OnNewTarget", data.target, inst.components.follower.leader)
     if data.target then
         if data.target:HasTag("tallbird") or data.target:HasTag("smallbird") or data.target:HasTag("springbird") then
-            inst.components.components.combat:SetTarget(nil)
+            inst.components.combat:SetTarget(nil)
         end
 
         if data.target:HasTag("player") then
@@ -170,7 +170,7 @@ local function OnAttacked(inst, data)
     end
 
     inst.components.combat:SuggestTarget(data.attacker)
-    inst.components.combat:ShareTarget(data.attacker, 10, function(dude) return dude:HasTag("smallbird") and not dude.components.health:IsDead() end, 5)
+    inst.components.combat:ShareTarget(data.attacker, 10, function(dude) return dude:HasTag("tametallbird") and not dude.components.health:IsDead() end, 5)
 end
 
 local function GetPeepChance(inst)
