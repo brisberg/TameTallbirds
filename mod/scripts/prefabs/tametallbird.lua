@@ -35,13 +35,11 @@ local function FollowPlayer(inst)
 
     if inst.components.follower.leader == nil then
         local player = GetPlayer()
-        print(inst.components.follower.leader)
         if player and player.components.leader then
             if inst.components.knownLocations then
                 inst.components.knownLocations:ForgetLocation("StayLocation")
             end
             player.components.leader:AddFollower(inst)
-            print(inst.components.follower.leader)
         end
     end
 end
