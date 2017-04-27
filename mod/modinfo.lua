@@ -30,8 +30,8 @@ description = "Full-grown Tallbirds raised by the player will be friendly."
 author = "Keidence"
 version = "1.01"
 forumthread = "None"
-icon_atlas = "mod_preview_icon.xml"
-icon = "mod_preview_icon.tex"
+icon_atlas = "modicon.xml"
+icon = "modicon.tex"
 --------------------------------------------------
 ---- Compatibility
 --------------------------------------------------
