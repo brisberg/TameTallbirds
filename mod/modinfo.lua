@@ -18,11 +18,12 @@ description = "Full-grown Tallbirds raised by the player will be friendly."
 
 -- NOTE: Be careful of using Tame Tallbirds with other mods that add player companions. Attacking your birds to cause them to stay put may cause them to fight your other companions.
 
--- Have feedback, suggestions, or found a bug? Submit an issue on Github or open a pull request.
--- GitHub: https://github.com/brisberg/TameTallbirds/issues
+-- Have feedback, suggestions, or found a bug? Submit an issue on [url=https://github.com/brisberg/TameTallbirds/issues]Github[/url] or open a pull request.
 -- If you don't have a Github account you can post in the pinned discussions below.
 
 -- Next: Converting the mod to work with Don't Starve Together!
+
+-- Special Thanks to [url=http://steamcommunity.com/id/wheatmouse/]Yuli[/url] for the mod icon art!
 
 -- Testing:
 --   - Configure the mod with 'DEBUG Fast Bird Growth' to cause Tallbirds to grow up in a matter of seconds.
