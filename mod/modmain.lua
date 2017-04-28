@@ -13,11 +13,6 @@ AddPrefabPostInit("teenbird", tweak_teenbird)
 tweak_smallbird = require('tweaks/tweaksmallbird')
 
 AddPrefabPostInit("smallbird", tweak_smallbird)
-
--- Add a prefabpostinit to Wendy's Abigail to prevent her fighting your Tame Tallbirds
-tweak_abigail = require('tweaks/tweakabigail')
-
-AddPrefabPostInit("abigail", tweak_abigail)
 ------------------------------------------------------
 
 -- Define a new prefab for Tame Tallbirds
