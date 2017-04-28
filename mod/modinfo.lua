@@ -17,11 +17,11 @@ description = "Full-grown Tallbirds raised by the player will be friendly."
 
 -- Right click the bird to make it guard an area, then give it food to cause it to follow you again.
 
--- NOTE: Be careful of starving your Tame Tallbirds near other player companions. Pecking you will often cause your other companions to attempt to defend you.
+-- [b]NOTE[/b]: Be careful of starving your Tame Tallbirds near other player companions. Pecking you will often cause your other companions to attempt to defend you.
 
 -- Have feedback, suggestions, or found a bug? Submit an issue on [url=https://github.com/brisberg/TameTallbirds/issues]Github[/url] or open a pull request. If you don't have a Github account you can post in the pinned discussions below.
 
--- Next: Converting the mod to work with Don't Starve Together!
+-- [b]Next[/b]: Converting the mod to work with Don't Starve Together!
 
 -- Special Thanks to [url=http://steamcommunity.com/id/wheatmouse/]Yuli[/url] for the mod icon art!
 
