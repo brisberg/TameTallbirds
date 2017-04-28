@@ -20,34 +20,6 @@ tweak_abigail = require('tweaks/tweakabigail')
 AddPrefabPostInit("abigail", tweak_abigail)
 ------------------------------------------------------
 
------ TEMP ACTIONS ---
-local ACTIONS = _G.ACTIONS
--- require('actions')
-ACTIONS.TTB_STAYHERE = {}
-ACTIONS.TTB_STAYHERE.priority = 1
-ACTIONS.TTB_STAYHERE.strfn = nil
-ACTIONS.TTB_STAYHERE.testfn = nil
-ACTIONS.TTB_STAYHERE.instant = true
-ACTIONS.TTB_STAYHERE.rmb = true
-ACTIONS.TTB_STAYHERE.distance = 3
--- ACTION(1, nil, true, 3)
-
-ACTIONS.TTB_STAYHERE.fn = function(act)
-    print("Running the TTB_STAYHERE act fn")
-    if act.doer.components.talker then
-        print("   Say 'Stay Here'")
-        act.doer.components.talker:Say("Stay here!")
-    end
-    print("   Unfollow Player")
-    act.target.userfunctions.UnfollowPlayer(act.target, act.doer)
-    return true
-end
-
-STRINGS.ACTIONS.TTB_STAYHERE = "Stay"
-
-ACTIONS.TTB_STAYHERE.str = STRINGS.ACTIONS["TTB_STAYHERE"] or "ACTION"
-ACTIONS.TTB_STAYHERE.id = "TTB_STAYHERE"
-
 -- Define a new prefab for Tame Tallbirds
 PrefabFiles = {'tametallbird'}
 STRINGS.NAMES.TAMETALLBIRD = 'Tame Tallbird'
@@ -56,6 +28,10 @@ STRINGS.CHARACTERS.GENERIC.DESCRIBE.TAMETALLBIRD = {
     HUNGRY = "Better get you some food, Big Guy.",
     STARVING = "Careful Big Guy, just don't eat me!",
 }
+
+------------------------------------------------------
+-- Load the custom actions
+require('actions/actions')
 
 ------------------------------------------------------
 -- Tuning Values for Tame Tallbirds

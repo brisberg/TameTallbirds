@@ -161,16 +161,6 @@ end
 
 local function OnAttacked(inst, data)
     -- print("tametallbird - OnAttacked !!!")
-
-    if data.attacker ~= nil and data.attacker:HasTag("player") then
-        if inst.components.follower.leader == data.attacker then
-            if data.attacker.components.talker then
-                data.attacker.components.talker:Say("Stay here!")
-            end
-            return inst.userfunctions.UnfollowPlayer(inst, data.attacker)
-        end
-    end
-
     inst.components.combat:SuggestTarget(data.attacker)
     inst.components.combat:ShareTarget(data.attacker, 10, function(dude) return dude:HasTag("tametallbird") and not dude.components.health:IsDead() end, 5)
 end
@@ -247,6 +237,7 @@ local function create_tame_tallbird()
     }
 
     ------------------------------------------
+    inst:AddComponent("ttb_pet")
     inst:AddComponent("health")
     inst:AddComponent("hunger")
 
@@ -306,9 +297,6 @@ local function create_tame_tallbird()
 
     inst:AddComponent("lootdropper")
     inst.components.lootdropper:SetLoot({"meat"}, {"meat"})
-
-    -- inst.CollectSceneActions = CollectSceneActions
-    inst.inherentscenealtaction = ACTIONS.TTB_STAYHERE
 
     --print("tametallbird - create_tame_tallbird END")
     return inst
