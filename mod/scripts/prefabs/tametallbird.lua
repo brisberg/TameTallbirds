@@ -53,6 +53,9 @@ local function UnfollowPlayer(inst, player)
                 inst.components.knownLocations:RememberLocation("StayLocation", Vector3(inst.Transform:GetWorldPosition()))
             end
             player.components.leader:RemoveFollower(inst)
+            inst:DoTaskInTime(1, function(inst)
+                inst.sg:GoToState("idle_peep")
+            end)
         end
     end
 end
@@ -86,6 +89,7 @@ local function OnGetItemFromPlayer(inst, giver, item)
         end
         FollowPlayer(inst)
         if inst.components.eater:Eat(item) then
+            inst.sg:GoToState("eat")
             --print("   yummy!")
             -- yay!?
         end
@@ -302,6 +306,9 @@ local function create_tame_tallbird()
 
     inst:AddComponent("lootdropper")
     inst.components.lootdropper:SetLoot({"meat"}, {"meat"})
+
+    -- inst.CollectSceneActions = CollectSceneActions
+    inst.inherentscenealtaction = ACTIONS.TTB_STAYHERE
 
     --print("tametallbird - create_tame_tallbird END")
     return inst
