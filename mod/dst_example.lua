@@ -9,7 +9,9 @@ local function fn()
 	inst.AnimState:SetBuild("spear")   
 	inst.AnimState:PlayAnimation("idle")       
 	inst:AddTag("sharp")   
-	if not TheWorld.ismastersim then        return inst    end   
+	if not TheWorld.ismastersim then
+		return inst
+	end
 	inst.entity:SetPristine()   
 	inst:AddComponent("weapon")   
 	inst.components.weapon:SetDamage(TUNING.SPEAR_DAMAGE)
@@ -50,10 +52,10 @@ local function spearthrow_point(inst, doer, pos, actions, right)
 		local cur_time = GLOBAL.GetTime()
 		if RANGE_CHECK then
 			for k,v in pairs(GLOBAL.TheSim:FindEntities(pos.x, pos.y, pos.z, 2)) do
-				if v.replica and v.replica.combat and v.replica.combat:CanBeAttacked(doer) and
-					doer.replica and doer.replica.combat and doer.replica.combat:CanTarget(v)
+				if v.replica and v.replica.combat and v.replica.combat:CanBeAttacked(doer)
+					and doer.replica and doer.replica.combat and doer.replica.combat:CanTarget(v)
 					and (not v:HasTag("wall")) and (pvp or ((not pvp)
-						and (not (doer:HasTag("player") and v:HasTag("player"))))) then
+					and (not (doer:HasTag("player") and v:HasTag("player"))))) then
 					target = v
 					break
 				end
@@ -62,15 +64,19 @@ local function spearthrow_point(inst, doer, pos, actions, right)
 		if target or not RANGE_CHECK then
 			table.insert(actions, GLOBAL.ACTIONS.SPEARTHROW)
 		end
-		endendAddComponentAction("POINT", "spearthrowable", spearthrow_point)
-		local function spearthrow_target(inst, doer, target, actions, right)
-			local pvp = GLOBAL.TheNet:GetPVPEnabled()
-			local cur_time = GLOBAL.GetTime()
-			if right and (not target:HasTag("wall"))
-				and doer.replica.combat ~= nil
-				and doer.replica.combat:CanTarget(target)
-				and target.replica.combat:CanBeAttacked(doer)
-				and (pvp or ((not pvp)
-				and (not (doer:HasTag("player") and target:HasTag("player")))))	then
-				table.insert(actions, GLOBAL.ACTIONS.SPEARTHROW)
-				endendAddComponentAction("EQUIPPED", "spearthrowable", spearthrow_target)
+	end
+end
+AddComponentAction("POINT", "spearthrowable", spearthrow_point)
+local function spearthrow_target(inst, doer, target, actions, right)
+	local pvp = GLOBAL.TheNet:GetPVPEnabled()
+	local cur_time = GLOBAL.GetTime()
+	if right and (not target:HasTag("wall"))
+		and doer.replica.combat ~= nil
+		and doer.replica.combat:CanTarget(target)
+		and target.replica.combat:CanBeAttacked(doer)
+		and (pvp or ((not pvp)
+		and (not (doer:HasTag("player") and target:HasTag("player")))))	then
+		table.insert(actions, GLOBAL.ACTIONS.SPEARTHROW)
+	end
+end
+AddComponentAction("EQUIPPED", "spearthrowable", spearthrow_target)
