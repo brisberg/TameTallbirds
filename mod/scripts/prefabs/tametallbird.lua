@@ -38,12 +38,11 @@ local function ShouldSleep(inst)
     return DefaultSleepTest(inst) and not inst.components.hunger:IsStarving(inst) and inst.components.follower:IsNearLeader(SLEEP_NEAR_LEADER_DISTANCE)
 end
 
-local function FollowPlayer(inst)
+local function FollowPlayer(inst, player)
     -- print("tametallbird - FollowPlayer")
 
     if inst.components.follower.leader == nil then
-        local player = GetPlayer()
-        if player and player.components.leader then
+        if player and player:HasTag("player") and player.components.leader then
             if inst.components.knownLocations then
                 inst.components.knownLocations:ForgetLocation("StayLocation")
             end
@@ -73,13 +72,13 @@ local function CanEatTest(inst, item)
     --print("tametallbird - CanEatTest", inst.name, item.components.edible.foodtype, item, item.prefab)
     local canEat = not (item.prefab == "tallbirdegg" or item.prefab == "tallbirdegg_cracked" or item.prefab == "tallbirdegg_cooked")
     --print("   canEat?", canEat)
-    return canEat
+    return canEat or (inst.components.eater and inst.components.eater:CanEat(inst, item))
 end
 
 local function ShouldAcceptItem(inst, item)
     --print("tametallbird - ShouldAcceptItem", inst.name, item.name)
     if item.components.edible and inst.components.hunger and inst.components.eater then
-        return inst.components.eater:CanEat(item)
+        return CanEatTest(inst, item)
     end
 end
 
@@ -95,7 +94,7 @@ local function OnGetItemFromPlayer(inst, giver, item)
         if inst.components.combat.target and inst.components.combat.target == giver then
             inst.components.combat:SetTarget(nil)
         end
-        FollowPlayer(inst)
+        FollowPlayer(inst, giver)
         if inst.components.eater:Eat(item) then
             inst.sg:GoToState("eat")
             --print("   yummy!")
@@ -230,7 +229,10 @@ local function create_tame_tallbird()
     MakeCharacterPhysics(inst, 10, .5)
 
     if TheSim:GetGameID() == "DST" then
-        inst.AddNetwork()
+        inst.entity:AddNetwork()
+
+        --trader (from trader component) added to pristine state for optimization
+        inst:AddTag("trader")
 
         inst.entity:SetPristine()
 
@@ -255,6 +257,7 @@ local function create_tame_tallbird()
 
     inst.userfunctions =
     {
+        CanEatTest = CanEatTest,
         FollowPlayer = FollowPlayer,
         GetPeepChance = GetPeepChance,
         UnfollowPlayer = UnfollowPlayer,
@@ -279,9 +282,12 @@ local function create_tame_tallbird()
     inst:AddComponent("knownLocations")
 
     inst:AddComponent("eater")
-    inst.components.eater:SetOmnivore()
+    if TheSim:GetGameID() == "DST" then
+        inst.components.eater:SetDiet({ FOODGROUP.OMNI }, { FOODGROUP.OMNI })
+    else
+        inst.components.eater:SetOmnivore()
+    end
     inst.components.eater:SetOnEatFn(OnEat)
-    inst.components.eater:SetCanEatTestFn(CanEatTest)
 
     inst:AddComponent("sleeper")
     inst.components.sleeper:SetResistance(3)

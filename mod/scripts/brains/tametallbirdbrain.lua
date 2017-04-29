@@ -36,7 +36,7 @@ end
 
 local function CanSeeFood(inst)
     local notags = {"FX", "NOCLICK", "DECOR","INLIMBO"}
-    local target = FindEntity(inst, SEE_FOOD_DIST, function(item) return inst.components.eater:CanEat(item) end, nil, notags)
+    local target = FindEntity(inst, SEE_FOOD_DIST, function(item) return inst.userfunctions.CanEatTest(inst, item) end, nil, notags)
     -- if target then
     --     print("CanSeeFood", inst.name, target.name)
     -- end

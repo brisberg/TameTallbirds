@@ -35,11 +35,18 @@ icon = "modicon.tex"
 --------------------------------------------------
 ---- Compatibility
 --------------------------------------------------
+----- Don't Starve
 dont_starve_compatible = true
 reign_of_giants_compatible = true
 shipwrecked_compatible = true
 
 api_version = 6
+
+----- Don't Starve Together
+dst_compatible = true
+all_clients_require_mod = true
+client_only_mod = false
+
 api_version_dst = 10
 --------------------------------------------------
 ---- Config
