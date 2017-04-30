@@ -284,7 +284,11 @@ local function create_tame_tallbird()
     inst:ListenForEvent("healthdelta", OnHealthDelta)
 
     inst.components.hunger:SetMax(TUNING.TAME_TALLBIRD_HUNGER)
-    inst.components.hunger:SetRate(TUNING.TAME_TALLBIRD_HUNGER/TUNING.TAME_TALLBIRD_STARVE_TIME)
+    local hunger_rate = 0
+    if TUNING.TAME_TALLBIRD_STARVE_TIME ~= 0 then
+        hunger_rate = TUNING.TAME_TALLBIRD_HUNGER/TUNING.TAME_TALLBIRD_STARVE_TIME
+    end
+    inst.components.hunger:SetRate(hunger_rate)
     inst.components.hunger:SetKillRate(TUNING.TAME_TALLBIRD_HEALTH/TUNING.TAME_TALLBIRD_STARVE_KILL_TIME)
 
     inst.components.combat.hiteffectsymbol = "head"

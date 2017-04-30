@@ -23,7 +23,11 @@ local START_RUN_DIST = 4
 local STOP_RUN_DIST = 6
 
 local function IsHungry(inst)
-    return inst.components.hunger and inst.components.hunger:GetPercent() < FIND_FOOD_HUNGER_PERCENT
+    local _hunger = inst.components.hunger
+    if _hunger then
+        return _hunger.hungerrate == 0 or _hunger:GetPercent() < FIND_FOOD_HUNGER_PERCENT
+    end
+    return false
 end
 
 local function IsStarving(inst)

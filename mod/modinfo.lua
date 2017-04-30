@@ -9,7 +9,7 @@ description = "Full-grown Tallbirds raised by the player will be friendly."
 -- Tame Tallbirds:
 --   - Have similar combat stats to wild Tallbirds
 --   - Friendly with both tame and wild Tallbirds
---   - Require food each day
+--   - Require food every few days (configurable)
 --   - Any food will heal the bird for a large amount
 --   - Will peck you if they are hungry (similar to teen birds)
 --   - Will not eat Tallbird Eggs
@@ -75,6 +75,7 @@ configuration_options =
         name = "TAMETALLBIRD_STARVE_TIME",
         label = "Food Consumption",
         options = {
+            {description = "None", data = 0},
             {description = "Very Low", data = 6},
             {description = "Low", data = 4},
             {description = "Normal", data = 3},
