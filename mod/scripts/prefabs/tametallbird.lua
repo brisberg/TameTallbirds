@@ -11,13 +11,19 @@ local assets=
 
 local function GetStatus(inst)
     --print("tametallbird - GetStatus")
-    if inst.components.hunger then
+    if inst.components.sleeper and inst.components.sleeper:IsAsleep() then
+        -- print("SLEEPING")
+        return "SLEEPING"
+    elseif inst.components.hunger then
         if inst.components.hunger:IsStarving(inst) then
             --print("STARVING")
             return "STARVING"
         elseif inst.components.hunger:GetPercent() < .5 then
             --print("HUNGRY")
             return "HUNGRY"
+        elseif inst.components.hunger:GetPercent() > .9 then
+            --print("FULL")
+            return "FULL"
         end
     end
 end

@@ -19,9 +19,11 @@ AddPrefabPostInit("smallbird", tweak_smallbird)
 PrefabFiles = {'tametallbird'}
 STRINGS.NAMES.TAMETALLBIRD = 'Tame Tallbird'
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.TAMETALLBIRD = {
+    FULL = "Surprisingly friendly with a full stomach.",
     GENERIC = "Very tall and very loyal.",
     HUNGRY = "Better get you some food, Big Guy.",
     STARVING = "Careful Big Guy, just don't eat me!",
+    SLEEPING = "Curiously docile.",
 }
 
 ------------------------------------------------------
