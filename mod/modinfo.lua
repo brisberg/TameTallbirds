@@ -28,7 +28,7 @@ description = "Full-grown Tallbirds raised by the player will be friendly."
 -- Testing: Configure the mod with 'DEBUG Fast Bird Growth' to cause Tallbirds to grow up in a matter of seconds.
 
 author = "Keidence"
-version = "1.02"
+version = "1.03"
 forumthread = "None"
 icon_atlas = "modicon.xml"
 icon = "modicon.tex"
