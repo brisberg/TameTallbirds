@@ -1,7 +1,6 @@
 require "behaviours/chaseandattack"
 require "behaviours/faceentity"
 require "behaviours/follow"
-require "behaviours/standstill"
 require "behaviours/wander"
 
 
@@ -29,10 +28,6 @@ end
 
 local function IsStarving(inst)
     return inst.components.hunger and inst.components.hunger:IsStarving()
-end
-
-local function ShouldStandStill(inst)
-    return inst.components.hunger and inst.components.hunger:IsStarving() and not inst:HasTag("teenbird")
 end
 
 local function CanSeeFood(inst)
