@@ -99,7 +99,7 @@ configuration_options =
         options = {
             {description = "1 Day", data = 1},
             {description = "2 Days", data = 2},
-            {description = "3 Days", data = 3},
+            {description = "3 Days", data = 3, hover = "Game Default"},
             {description = "4 Days", data = 4},
             {description = "5 Days", data = 5},
         },
@@ -112,7 +112,7 @@ configuration_options =
         options = {
             {description = "1 Day", data = 1},
             {description = "3 Days", data = 3},
-            {description = "5 Days", data = 5},
+            {description = "5 Days", data = 5, hover = "Game Default"},
             {description = "10 Days", data = 10},
             {description = "15 Days", data = 15},
             {description = "20 Days", data = 20},
@@ -126,7 +126,7 @@ configuration_options =
         options = {
             {description = "1 Day", data = 1},
             {description = "3 Days", data = 3},
-            {description = "5 Days", data = 5},
+            {description = "5 Days", data = 5, hover = "Game Default"},
             {description = "10 Days", data = 10},
             {description = "15 Days", data = 15},
             {description = "20 Days", data = 20},
