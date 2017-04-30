@@ -3,6 +3,8 @@ local brain = require "brains/tametallbirdbrain"
 local WAKE_TO_FOLLOW_DISTANCE = 10
 local SLEEP_NEAR_LEADER_DISTANCE = 7
 
+local HUNT_PREY_HUNGER_PERCENTAGE = 0.25
+
 local assets=
 {
 	Asset("ANIM", "anim/ds_tallbird_basic.zip"),
@@ -145,14 +147,20 @@ end
 
 local function Retarget(inst)
     local notags = {"FX", "NOCLICK", "INLIMBO", "aquadic", "springbird", "smallbird", "tallbird"}
-    local yestags = {"monster", "pig", "character"}
+    local yestags = {"monster", "pig"}
+    if inst.components.hunger then
+        if inst.components.hunger:GetPercent() < HUNT_PREY_HUNGER_PERCENTAGE then
+            table.insert(yestags, "prey")
+            table.insert(yestags, "bird")
+        end
+        if inst.components.hunger:IsStarving() and inst.components.follower and inst.components.follower.leader ~= nil then
+            table.insert(yestags, "character")
+        end
+    end
+
     return FindEntity(inst, TUNING.TAME_TALLBIRD_TARGET_DIST, function(guy)
         if inst.components.combat:CanTarget(guy)  and (not guy.LightWatcher or guy.LightWatcher:IsInLight()) then
-            if inst.components.follower.leader ~= nil then
-                return (guy:HasTag("monster") or (guy == inst.components.follower.leader and guy:HasTag("player") and inst.components.hunger and inst.components.hunger:IsStarving()))
-            else
-                return guy:HasTag("monster")
-            end
+            return true
         end
     end, nil, notags, yestags)
 end

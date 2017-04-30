@@ -44,6 +44,7 @@ local function CanSeeFood(inst)
 end
 
 local function FindFoodAction(inst)
+    -- print("TameTallBirdBrain FindFoodAction")
     -- if inst.sg:HasStateTag("busy") then
     -- 	return
     -- end
@@ -92,8 +93,12 @@ function TameTallBirdBrain:OnStart()
             ConditionNode(function() return IsStarving(self.inst) and CanSeeFood(self.inst) end, "SeesFoodToEat"),
             ParallelNodeAny {
                 WaitNode(math.random()*.5),
-                PriorityNode {
-                    Follow(self.inst, function() return self.inst.components.follower.leader end, MIN_FOLLOW_DIST, TARGET_FOLLOW_DIST, MAX_FOLLOW_DIST),
+                PriorityNode{
+                    SequenceNode{
+                        ConditionNode(function() return self.inst.components.follower.leader end, "HasLeader"),
+                        Follow(self.inst, function() return self.inst.components.follower.leader end, MIN_FOLLOW_DIST, TARGET_FOLLOW_DIST, MAX_FOLLOW_DIST),
+                    },
+                    Wander(self.inst, GetStayLocation, MAX_FOLLOW_DIST-1, {minwalktime=.5, randwalktime=.5, minwaittime=6, randwaittime=3}),
                 },
             },
             DoAction(self.inst, FindFoodAction),
@@ -106,9 +111,13 @@ function TameTallBirdBrain:OnStart()
         SequenceNode{
             ConditionNode(function() return IsHungry(self.inst) and CanSeeFood(self.inst) end, "SeesFoodToEat"),
             ParallelNodeAny {
-                WaitNode(1 + math.random()*2),
-                PriorityNode {
-                    Follow(self.inst, function() return self.inst.components.follower.leader end, MIN_FOLLOW_DIST, TARGET_FOLLOW_DIST, MAX_FOLLOW_DIST),
+                WaitNode(math.random()*.5),
+                PriorityNode{
+                    SequenceNode{
+                        ConditionNode(function() return self.inst.components.follower.leader end, "HasLeader"),
+                        Follow(self.inst, function() return self.inst.components.follower.leader end, MIN_FOLLOW_DIST, TARGET_FOLLOW_DIST, MAX_FOLLOW_DIST),
+                    },
+                    Wander(self.inst, GetStayLocation, MAX_FOLLOW_DIST-1, {minwalktime=.5, randwalktime=.5, minwaittime=6, randwaittime=3}),
                 },
             },
             DoAction(self.inst, FindFoodAction),
