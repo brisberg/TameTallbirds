@@ -31,29 +31,24 @@ STRINGS.CHARACTERS.GENERIC.DESCRIBE.TAMETALLBIRD = {
 require('actions/actions')
 
 if GLOBAL.TheSim:GetGameID() == "DST" then
-    -- local Action = ACTION
     local TTB_STAYHERE = AddAction("TTB_STAYHERE", "Stay", function(act)
-        print("Running the TTB_STAYHERE act fn")
         if act.doer.components.talker then
-            print("   Say 'Stay Here'")
             act.doer.components.talker:Say("Stay here!")
         end
-        print("   Unfollow Player")
         act.target.userfunctions.UnfollowPlayer(act.target, act.doer)
         return true
     end)
-    -- TTB_STAYHERE.priority = action_data.priority
-    -- TTB_STAYHERE.instant = action_data.instant
-    -- TTB_STAYHERE.distance = action_data.distance
     TTB_STAYHERE.priority = 1
     TTB_STAYHERE.instant = true
     TTB_STAYHERE.distance = 3
 end
 
 if GLOBAL.TheSim:GetGameID() == "DST" then
-    local function stayhere_action(inst, doer, pos, actions, right)
-        if right and self.inst.components.follower and self.inst.components.follower.leader == doer then
-            table.insert(actions, ACTIONS.TTB_STAYHERE)
+    local function stayhere_action(inst, doer, actions, right)
+        -- print("TTB Stayhere_action collector called", inst, doer, right)
+        print("   ", inst.components.follower.leader)
+        if right and inst.components.follower and inst.components.follower.leader == doer then
+            table.insert(actions, GLOBAL.ACTIONS.TTB_STAYHERE)
         end
     end
     AddComponentAction("SCENE", "ttb_pet", stayhere_action)

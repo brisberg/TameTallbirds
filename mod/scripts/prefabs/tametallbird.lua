@@ -225,6 +225,8 @@ local function create_tame_tallbird()
 
     inst.entity:AddSoundEmitter()
     inst.entity:AddDynamicShadow()
+    
+    inst:AddComponent("ttb_pet")
 
     MakeCharacterPhysics(inst, 10, .5)
 
@@ -264,7 +266,6 @@ local function create_tame_tallbird()
     }
 
     ------------------------------------------
-    inst:AddComponent("ttb_pet")
     inst:AddComponent("health")
     inst:AddComponent("hunger")
 
