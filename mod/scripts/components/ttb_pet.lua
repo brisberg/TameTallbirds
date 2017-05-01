@@ -1,4 +1,4 @@
-print("LOADING TTB_PET COMPONENT")
+-- print("LOADING TTB_PET COMPONENT")
 local TTB_Pet = Class(function(self, inst)
     self.inst = inst
 end)
