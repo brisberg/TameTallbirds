@@ -46,7 +46,6 @@ end
 if GLOBAL.TheSim:GetGameID() == "DST" then
     local function stayhere_action(inst, doer, actions, right)
         -- print("TTB Stayhere_action collector called", inst, doer, right)
-        print("   ", inst.components.follower.leader)
         if right and inst.components.follower and inst.components.follower.leader == doer then
             table.insert(actions, GLOBAL.ACTIONS.TTB_STAYHERE)
         end

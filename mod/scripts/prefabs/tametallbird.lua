@@ -38,6 +38,16 @@ local function ShouldSleep(inst)
     return DefaultSleepTest(inst) and not inst.components.hunger:IsStarving(inst) and inst.components.follower:IsNearLeader(SLEEP_NEAR_LEADER_DISTANCE)
 end
 
+local function OnPlayerRemoved(inst, player)
+    print("TTB Tallbird OnPlayerRemoved", player)
+    if inst.components.follower and inst.components.follower.leader then
+        if inst.components.follower.leader == player then
+            print("    Unfollowing")
+            UnfollowPlayer(inst, player)
+        end
+    end
+end
+
 local function FollowPlayer(inst, player)
     -- print("tametallbird - FollowPlayer")
 
@@ -47,6 +57,10 @@ local function FollowPlayer(inst, player)
                 inst.components.knownLocations:ForgetLocation("StayLocation")
             end
             player.components.leader:AddFollower(inst)
+            -- Listen for leader death or logout
+            inst:ListenForEvent("playerdeactivated", OnPlayerRemoved, player)
+            inst:ListenForEvent("playerdied", OnPlayerRemoved, player)
+            inst:ListenForEvent("makeplayerghost", OnPlayerRemoved, player)
         end
     end
 end
@@ -60,6 +74,10 @@ local function UnfollowPlayer(inst, player)
                 inst.components.knownLocations:RememberLocation("StayLocation", Vector3(inst.Transform:GetWorldPosition()))
             end
             player.components.leader:RemoveFollower(inst)
+            -- Cleanup Event Listeners for leader death or logout
+            inst:RemoveEventCallback("playerdeactivated", OnPlayerRemoved, player)
+            inst:RemoveEventCallback("playerdied", OnPlayerRemoved, player)
+            inst:RemoveEventCallback("makeplayerghost", OnPlayerRemoved, player)
             inst:DoTaskInTime(1, function(inst)
                 inst.sg:GoToState("idle_peep")
             end)
