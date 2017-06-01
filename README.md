@@ -10,3 +10,5 @@ cp -R ~/DevProjects/TameTallbirds/mod/ ~/Library/Application\ Support/Steam/stea
 
 dst:
 cp -R ~/DevProjects/TameTallbirds/mod/ ~/Library/Application\ Support/Steam/steamapps/common/Don\'t\ Starve\ Together/dontstarve_steam.app/Contents/mods/tametallbirds
+
+Language codes follow: https://en.wikipedia.org/wiki/ISO_639-1

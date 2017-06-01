@@ -136,4 +136,13 @@ configuration_options =
         default = false,
         hover = "For testing only. Makes Tallbirds hatch and grow in a matter of seconds.",
     },
+    {
+        name = "LANGUAGE",
+        label = "Language",
+        options = {
+            {description = "English", data = "en-us"},
+        },
+        default = "en-us",
+        hover = "Select a language.",
+    },
 }

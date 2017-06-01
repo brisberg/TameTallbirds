@@ -17,14 +17,12 @@ AddPrefabPostInit("smallbird", tweak_smallbird)
 
 -- Define a new prefab for Tame Tallbirds
 PrefabFiles = {'tametallbird'}
-STRINGS.NAMES.TAMETALLBIRD = 'Tame Tallbird'
-STRINGS.CHARACTERS.GENERIC.DESCRIBE.TAMETALLBIRD = {
-    FULL = "Surprisingly friendly with a full stomach.",
-    GENERIC = "Very tall and very loyal.",
-    HUNGRY = "Better get you some food, Big Guy.",
-    STARVING = "Careful Big Guy, just don't eat me!",
-    SLEEPING = "Curiously docile.",
-}
+
+------------------------------------------------------
+-- Load language specific strings
+local languageStrings = require('lang/' .. GetModConfigData("LANGUAGE"))
+STRINGS.NAMES.TAMETALLBIRD = languageStrings.TAMETALLBIRD_NAME
+STRINGS.CHARACTERS.GENERIC.DESCRIBE.TAMETALLBIRD = languageStrings.TAMETALLBIRD_DESCRIBE
 
 ------------------------------------------------------
 -- Load the custom actions
