@@ -6,5 +6,9 @@ return {
 	    HUNGRY = "Better get you some food, Big Guy.",
 	    STARVING = "Careful Big Guy, just don't eat me!",
 	    SLEEPING = "Curiously docile.",
-	}
+	},
+	STAY_ACTION = {
+		NAME = "Stay",
+		ANNOUNCE = "Stay here!",
+	},
 }

@@ -23,6 +23,10 @@ PrefabFiles = {'tametallbird'}
 local languageStrings = require('lang/' .. GetModConfigData("LANGUAGE"))
 STRINGS.NAMES.TAMETALLBIRD = languageStrings.TAMETALLBIRD_NAME
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.TAMETALLBIRD = languageStrings.TAMETALLBIRD_DESCRIBE
+STRINGS.ACTIONS.TTB_STAYHERE = languageStrings.STAY_ACTION.NAME
+STRINGS.CHARACTERS.GENERIC.ANNOUNCE_ACTIONS = {
+    TTB_STAYHERE = languageStrings.STAY_ACTION.ANNOUNCE
+}
 
 ------------------------------------------------------
 -- Load the custom actions
