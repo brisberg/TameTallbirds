@@ -141,6 +141,7 @@ configuration_options =
         label = "Language",
         options = {
             {description = "English", data = "en-us"},
+            {description = "Russian", data = "ru"},
         },
         default = "en-us",
         hover = "Select a language.",
