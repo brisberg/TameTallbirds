@@ -1,6 +1,6 @@
 return {
     -- Display name of the tame birds
-    TAMETALLBIRD_NAME = '温驯的高大的鸟',
+    TAMETALLBIRD_NAME = '疲倦的高大的鸟',
     TAMETALLBIRD_DESCRIBE = {
         -- Birds are friendly when well fed
         FULL = "当肚子满了的时候，这是非常友好的。",
