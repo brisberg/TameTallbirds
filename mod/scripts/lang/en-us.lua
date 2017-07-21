@@ -2,7 +2,7 @@ return {
     -- Display name of the tame birds
     TAMETALLBIRD_NAME = 'Tame Tallbird',
     TAMETALLBIRD_DESCRIBE = {
-       -- Birds are friendly when well fed
+        -- Birds are friendly when well fed
         FULL = "Surprisingly friendly with a full stomach.",
         -- Generic inspect string for the bird
         GENERIC = "Very tall and very loyal.",
