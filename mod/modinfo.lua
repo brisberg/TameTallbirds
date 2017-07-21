@@ -117,6 +117,7 @@ configuration_options =
         name = "LANGUAGE",
         label = "Language",
         options = {
+            {description = "中文", data = "zh"},
             {description = "English", data = "en-us"},
             {description = "русский", data = "ru"},
         },
