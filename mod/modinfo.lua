@@ -4,29 +4,6 @@
 name = "Tame Tallbirds"
 description = "Full-grown Tallbirds raised by the player will be friendly."
 
--- Ever raised a Tallbird? Probably not because in the base game raised Tallbirds are hostile and not much use. Tame Tallbirds seeks to fix that by making Tallbirds raised by the player loyal pets and potential combat allies.
-
--- Tame Tallbirds:
---   - Have similar combat stats to wild Tallbirds
---   - Friendly with both tame and wild Tallbirds
---   - Require food every few days (configurable)
---   - Any food will heal the bird for a large amount
---   - Will peck you if they are hungry (similar to teen birds)
---   - Will not eat Tallbird Eggs
---   - Will follow you into and out of caves
-
--- Right click the bird to make it guard an area, then give it food to cause it to follow you again.
-
--- NOTE: Be careful of starving your Tame Tallbirds near other player companions. Pecking you will often cause your other companions to attempt to defend you.
-
--- Have feedback, suggestions, or found a bug? Submit an issue on [url=https://github.com/brisberg/TameTallbirds/issues]Github[/url] or open a pull request. If you don't have a Github account you can post in the pinned discussions below.
-
--- Next: Converting the mod to work with Don't Starve Together!
-
--- Special Thanks to [url=http://steamcommunity.com/id/wheatmouse/]Yuli[/url] for the mod icon art!
-
--- Testing: Configure the mod with 'DEBUG Fast Bird Growth' to cause Tallbirds to grow up in a matter of seconds.
-
 author = "Keidence"
 version = "1.03"
 forumthread = "None"
