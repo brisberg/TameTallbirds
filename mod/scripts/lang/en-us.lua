@@ -1,6 +1,6 @@
 return {
     -- Display name of the tame birds
-    TAMETALLBIRD_NAME = 'Tame Tallbird',
+    TAMETALLBIRD_NAME = "Tame Tallbird",
     TAMETALLBIRD_DESCRIBE = {
         -- Birds are friendly when well fed
         FULL = "Surprisingly friendly with a full stomach.",
