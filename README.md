@@ -10,6 +10,8 @@ Ever raised a Tallbird? Probably not because in the base game raised Tallbirds a
 
 큰 새가 키운 적이 있습니까? 아마도베이스 게임에서 키 큰 새들이 적대적이며별로 사용하지 않기 때문일 것입니다. 재배된 큰 새를 사용하면 키 큰 새들을 충성도가 높은 애완 동물이나 잠재적 인 전투원으로 키울 수 있습니다.
 
+Avez-vous déjà élever un Tallbird? Probablement pas parce que dans le jeu de base, Tallbirds est hostile et ne sert à rien. Tame Tallbirds cherche à résoudre ce problème en faisant de Tallbirds soulevé par le joueur des animaux de compagnie fidèles et des alliés de combat potentiels.
+
 Tame Tallbirds:
 [list]
 [*] Have similar combat stats to wild Tallbirds
