@@ -8,6 +8,8 @@ Ever raised a Tallbird? Probably not because in the base game raised Tallbirds a
 曾经养过高脚鸟吗？在基本游戏中饲养的高脚鸟是敌对的，没有多少用处。 ”驯服高脚鸟”试图通过解决这个问题,让玩家养成的高脚鸟成为忠实的宠物和战友。
 注意：中文需要启用中文字体修改，例如 [url=http://steamcommunity.com/sharedfiles/filedetails/?id=874857181]Chinese中文支持[/url].
 
+큰 새가 키운 적이 있습니까? 아마도베이스 게임에서 키 큰 새들이 적대적이며별로 사용하지 않기 때문일 것입니다. 재배된 큰 새를 사용하면 키 큰 새들을 충성도가 높은 애완 동물이나 잠재적 인 전투원으로 키울 수 있습니다.
+
 Tame Tallbirds:
 [list]
 [*] Have similar combat stats to wild Tallbirds
