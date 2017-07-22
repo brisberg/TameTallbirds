@@ -1,22 +1,22 @@
 return {
     -- Display name of the tame birds
-    TAMETALLBIRD_NAME = '疲倦的高大的鸟',
+    TAMETALLBIRD_NAME = "高脚鸟",
     TAMETALLBIRD_DESCRIBE = {
         -- Birds are friendly when well fed
-        FULL = "当肚子满了的时候，这是非常友好的。",
+        FULL = "鸟肚子饱, 忠诚友好",
         -- Generic inspect string for the bird
-        GENERIC = "非常高，非常忠诚。",
+        GENERIC = "脚很高, 忠诚度也高",
         -- Bird is hungry and needs food
-        HUNGRY = "更好的给你一些食物，大家伙。",
+        HUNGRY = "该喂这家伙了",
         -- Bird is hungry and might attack the player
-        STARVING = "仔细的大家伙，只是不要吃我！",
+        STARVING = "小心! 别被它吃了",
         -- Bird is asleep
-        SLEEPING = "好奇的听话。",
+        SLEEPING = "异常的温驯",
     },
     STAY_ACTION = {
         -- Display name for Right-Click "Stay" action
-        NAME = "留",
+        NAME = "别动",
         -- Spoken command to a pet to "Stay here"
-        ANNOUNCE = "待在这！",
+        ANNOUNCE = "在这等我!",
     },
 }
