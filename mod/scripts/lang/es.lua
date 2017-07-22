@@ -1,6 +1,6 @@
 return {
     -- Display name of the tame birds
-    TAMETALLBIRD_NAME = "Pájaralto domesticado",
+    TAMETALLBIRD_NAME = "Pájaralto Domado",
     TAMETALLBIRD_DESCRIBE = {
         -- Birds are friendly when well fed
         FULL = "Sorprendentemente amable con un estómago lleno.",
