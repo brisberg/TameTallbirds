@@ -213,8 +213,8 @@ local function create_tame_tallbird()
 
     inst.entity:AddTransform()
     inst.entity:AddAnimState()
-    inst.AnimState:SetBank("tallbird")
     inst.AnimState:SetBuild("ds_tallbird_basic")
+    inst.AnimState:SetBank("tallbird")
     inst.AnimState:PlayAnimation("idle")
     inst.AnimState:Hide("beakfull")
 
@@ -223,6 +223,7 @@ local function create_tame_tallbird()
     inst:AddTag("companion")
     inst:AddTag("tallbird")
     inst:AddTag("tametallbird")
+    inst:AddTag("notraptrigger") -- Avoids tooth traps and beemines
 
     inst.entity:AddSoundEmitter()
     inst.entity:AddDynamicShadow()

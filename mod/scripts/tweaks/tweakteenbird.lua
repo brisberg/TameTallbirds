@@ -16,6 +16,9 @@ local function SpawnTameAdult(inst)
 end
 
 function tweak_teenbird(inst)
+    -- smallbirds avoid traps
+    inst:AddTag("notraptrigger")
+
     local SpawnNormalAdult = inst.userfunctions.SpawnAdult
     function inst.userfunctions.SpawnAdult(inst)
         -- SpawnTameAdult(inst)

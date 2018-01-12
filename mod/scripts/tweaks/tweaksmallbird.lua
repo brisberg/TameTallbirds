@@ -1,4 +1,7 @@
 function tweak_smallbird(inst)
+    -- smallbirds avoid traps
+    inst:AddTag("notraptrigger")
+
     local OldSpawnTeen = inst.userfunctions.SpawnTeen
     function inst.userfunctions.SpawnTeen(inst)
         OldSpawnTeen(inst)
