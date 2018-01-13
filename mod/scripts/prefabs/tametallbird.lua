@@ -146,8 +146,8 @@ local function OnNewTarget(inst, data)
 end
 
 local function Retarget(inst)
-    local notags = {"FX", "NOCLICK", "INLIMBO", "aquadic", "springbird", "smallbird", "tallbird"}
-    local yestags = {"monster", "pig"}
+    local notags = {"FX", "NOCLICK", "INLIMBO", "aquadic", "springbird", "smallbird", "tallbird", "companion", "pet"}
+    local yestags = {"monster", "werepig"}
     if inst.components.hunger then
         if inst.components.hunger:GetPercent() < HUNT_PREY_HUNGER_PERCENTAGE then
             table.insert(yestags, "prey")
