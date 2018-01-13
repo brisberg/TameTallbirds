@@ -10,6 +10,9 @@ function TTB_Pet:CollectSceneActions(doer, actions, right)
     if right and self.inst.components.follower and self.inst.components.follower.leader == doer then
         table.insert(actions, ACTIONS.TTB_STAYHERE)
     end
+    if right and self.inst.components.follower and self.inst.components.follower.leader == nil then
+        table.insert(actions, ACTIONS.TTB_FOLLOW)
+    end
 end
 
 return TTB_Pet

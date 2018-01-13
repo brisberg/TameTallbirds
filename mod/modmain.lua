@@ -27,6 +27,10 @@ STRINGS.ACTIONS.TTB_STAYHERE = languageStrings.STAY_ACTION.NAME
 STRINGS.CHARACTERS.GENERIC.ANNOUNCE_ACTIONS = {
     TTB_STAYHERE = languageStrings.STAY_ACTION.ANNOUNCE
 }
+STRINGS.ACTIONS.TTB_FOLLOW = languageStrings.FOLLOW_ACTION.NAME
+STRINGS.CHARACTERS.GENERIC.ANNOUNCE_ACTIONS = {
+    TTB_FOLLOW = languageStrings.FOLLOW_ACTION.ANNOUNCE
+}
 
 ------------------------------------------------------
 -- Load the custom actions

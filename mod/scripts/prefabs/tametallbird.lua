@@ -48,6 +48,11 @@ local function FollowPlayer(inst)
                 inst.components.knownLocations:ForgetLocation("StayLocation")
             end
             player.components.leader:AddFollower(inst)
+            if not inst.components.sleeper:IsAsleep() then
+                inst:DoTaskInTime(1, function(inst)
+                    inst.sg:GoToState("idle_peep")
+                end)
+            end
         end
     end
 end
@@ -61,9 +66,11 @@ local function UnfollowPlayer(inst, player)
                 inst.components.knownLocations:RememberLocation("StayLocation", Vector3(inst.Transform:GetWorldPosition()))
             end
             player.components.leader:RemoveFollower(inst)
-            inst:DoTaskInTime(1, function(inst)
-                inst.sg:GoToState("idle_peep")
-            end)
+                if not inst.components.sleeper:IsAsleep() then
+                    inst:DoTaskInTime(1, function(inst)
+                    inst.sg:GoToState("idle_peep")
+                end)
+            end
         end
     end
 end
@@ -95,7 +102,6 @@ local function OnGetItemFromPlayer(inst, giver, item)
         if inst.components.combat.target and inst.components.combat.target == giver then
             inst.components.combat:SetTarget(nil)
         end
-        FollowPlayer(inst)
         if inst.components.eater:Eat(item) then
             inst.sg:GoToState("eat")
             --print("   yummy!")

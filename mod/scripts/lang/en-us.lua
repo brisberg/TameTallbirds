@@ -19,4 +19,10 @@ return {
         -- Spoken command to a pet to "Stay here"
         ANNOUNCE = "Stay here!",
     },
+    FOLLOW_ACTION = {
+        -- Display name for Right-Click "Follow" action
+        NAME = "Follow",
+        -- Spoken command to a pet to "Follow Me"
+        ANNOUNCE = "Lets go Big Guy!",
+    },
 }
