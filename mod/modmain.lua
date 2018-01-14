@@ -25,16 +25,18 @@ STRINGS.NAMES.TAMETALLBIRD = languageStrings.TAMETALLBIRD_NAME
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.TAMETALLBIRD = languageStrings.TAMETALLBIRD_DESCRIBE
 STRINGS.ACTIONS.TTB_STAYHERE = languageStrings.STAY_ACTION.NAME
 STRINGS.CHARACTERS.GENERIC.ANNOUNCE_ACTIONS = {
-    TTB_STAYHERE = languageStrings.STAY_ACTION.ANNOUNCE
+    TTB_STAYHERE = languageStrings.STAY_ACTION.ANNOUNCE,
+    TTB_FOLLOW = languageStrings.FOLLOW_ACTION.ANNOUNCE,
 }
 STRINGS.ACTIONS.TTB_FOLLOW = languageStrings.FOLLOW_ACTION.NAME
-STRINGS.CHARACTERS.GENERIC.ANNOUNCE_ACTIONS = {
-    TTB_FOLLOW = languageStrings.FOLLOW_ACTION.ANNOUNCE
-}
 
 ------------------------------------------------------
 -- Load the custom actions
 require('actions/actions')
+ActionHandler = GLOBAL.ActionHandler
+
+AddStategraphActionHandler("wilson",ActionHandler(GLOBAL.ACTIONS.TTB_STAYHERE))
+AddStategraphActionHandler("wilson",ActionHandler(GLOBAL.ACTIONS.TTB_FOLLOW))
 
 ------------------------------------------------------
 -- Tuning Values for Tame Tallbirds

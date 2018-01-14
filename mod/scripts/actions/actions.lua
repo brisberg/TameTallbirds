@@ -7,7 +7,7 @@ ACTIONS.TTB_STAYHERE = {
     priority = 1,
     strfn = nil,
     testfn = nil,
-    instant = true,
+    instant = false,
     rmb = true,
     distance = 3,
 }
@@ -29,7 +29,7 @@ ACTIONS.TTB_FOLLOW = {
     priority = 1,
     strfn = nil,
     testfn = nil,
-    instant = true,
+    instant = false,
     rmb = true,
     distance = 3,
 }
