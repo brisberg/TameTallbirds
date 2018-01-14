@@ -13,8 +13,12 @@ Tame Tallbirds:
   - Will peck you if they are hungry (similar to teen birds)
   - Will not eat Tallbird Eggs
   - Will follow you into and out of caves
+  - Will NOT follow you through the Seaworthy (SW)
 
-Right click the adult bird to make it guard an area, then give it food to cause it to follow you again.
+Commands:
+  - Follow: Tallbird will follow the player and defend them from harm.
+  - Stay: Tallbird will remain in place, wandering about to guard the nearby area.
+  - Retreat: (In Combat) Tallbird will cancel its attack and return to you. It will not reengage a new target for 10 seconds, unless you or it are attacked first.
 
 NOTE: Be careful of starving your Tame Tallbirds near other player companions. Pecking you will often cause your other companions to attempt to defend you.
 
