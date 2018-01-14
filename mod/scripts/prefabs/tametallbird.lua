@@ -49,7 +49,11 @@ local function FollowPlayer(inst)
             end
             player.components.leader:AddFollower(inst)
             if not inst.components.sleeper:IsAsleep() then
-                inst:DoTaskInTime(1, function(inst)
+                if inst.peepdelaytask then
+                    inst.peepdelaytask:Cancel()
+                    inst.peepdelaytask = nil
+                end
+                inst.peepdelaytask = inst:DoTaskInTime(1, function(inst)
                     inst.sg:GoToState("idle_peep")
                 end)
             end
@@ -66,8 +70,12 @@ local function UnfollowPlayer(inst, player)
                 inst.components.knownLocations:RememberLocation("StayLocation", Vector3(inst.Transform:GetWorldPosition()))
             end
             player.components.leader:RemoveFollower(inst)
-                if not inst.components.sleeper:IsAsleep() then
-                    inst:DoTaskInTime(1, function(inst)
+            if not inst.components.sleeper:IsAsleep() then
+                if inst.peepdelaytask then
+                    inst.peepdelaytask:Cancel()
+                    inst.peepdelaytask = nil
+                end
+                inst.peepdelaytask = inst:DoTaskInTime(1, function(inst)
                     inst.sg:GoToState("idle_peep")
                 end)
             end
