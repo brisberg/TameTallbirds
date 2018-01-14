@@ -154,21 +154,23 @@ end
 local function Retarget(inst)
     local notags = {"FX", "NOCLICK", "INLIMBO", "aquadic", "springbird", "smallbird", "tallbird", "companion", "pet"}
     local yestags = {"monster", "werepig"}
-    if inst.components.hunger then
-        if inst.components.hunger:GetPercent() < HUNT_PREY_HUNGER_PERCENTAGE then
-            table.insert(yestags, "prey")
-            table.insert(yestags, "bird")
+    if not inst.retreating then
+        if inst.components.hunger then
+            if inst.components.hunger:GetPercent() < HUNT_PREY_HUNGER_PERCENTAGE then
+                table.insert(yestags, "prey")
+                table.insert(yestags, "bird")
+            end
+            if inst.components.hunger:IsStarving() and inst.components.follower and inst.components.follower.leader ~= nil then
+                table.insert(yestags, "character")
+            end
         end
-        if inst.components.hunger:IsStarving() and inst.components.follower and inst.components.follower.leader ~= nil then
-            table.insert(yestags, "character")
-        end
-    end
 
-    return FindEntity(inst, TUNING.TAME_TALLBIRD_TARGET_DIST, function(guy)
-        if inst.components.combat:CanTarget(guy)  and (not guy.LightWatcher or guy.LightWatcher:IsInLight()) then
-            return true
-        end
-    end, nil, notags, yestags)
+        return FindEntity(inst, TUNING.TAME_TALLBIRD_TARGET_DIST, function(guy)
+            if inst.components.combat:CanTarget(guy)  and (not guy.LightWatcher or guy.LightWatcher:IsInLight()) then
+                return true
+            end
+        end, nil, notags, yestags)
+    end
 end
 
 local function KeepTarget(inst, target)
@@ -198,6 +200,24 @@ local function GetPeepChance(inst)
     end
     --print("tametallbird - GetPeepChance", peep_percent)
     return peep_percent
+end
+
+local function ResetRetreating(inst)
+    -- print("callback, resetting retreating")
+    inst.retreating = false
+end
+
+local function Retreat(inst)
+    if inst.components.combat and inst.components.combat.target then
+        inst.retreating = true
+        inst.components.combat:GiveUp()
+
+        if inst.retreatcooldowntask then
+            inst.retreatcooldowntask:Cancel()
+            inst.retreatcooldowntask = nil
+        end
+        inst.retreatcooldowntask = inst:DoTaskInTime(10, ResetRetreating)
+    end
 end
 
 local function OnHealthDelta(inst, data)
@@ -255,6 +275,7 @@ local function create_tame_tallbird()
         FollowPlayer = FollowPlayer,
         GetPeepChance = GetPeepChance,
         UnfollowPlayer = UnfollowPlayer,
+        Retreat = Retreat,
     }
 
     ------------------------------------------

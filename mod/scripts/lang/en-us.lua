@@ -25,4 +25,10 @@ return {
         -- Spoken command to a pet to "Follow Me"
         ANNOUNCE = "Lets go Big Guy!",
     },
+    RETREAT_ACTION = {
+        -- Display name for Right-Click "Retreat" action
+        NAME = "Retreat",
+        -- Spoken command to a pet to "Retreat from combat"
+        ANNOUNCE = "Get out of there!",
+    },
 }

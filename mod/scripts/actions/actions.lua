@@ -1,4 +1,3 @@
------ TEMP ACTIONS ---
 local ACTIONS = _G.ACTIONS
 
 -- Stay Action
@@ -42,5 +41,33 @@ ACTIONS.TTB_FOLLOW.fn = function(act)
     end
     -- print("   Unfollow Player")
     act.target.userfunctions.FollowPlayer(act.target, act.doer)
+    return true
+end
+
+-- Retreat Action
+ACTIONS.TTB_RETREAT = {
+    id = "TTB_RETREAT",
+    priority = 2,
+    strfn = nil,
+    testfn = nil,
+    instant = true,
+    rmb = true,
+}
+
+ACTIONS.TTB_RETREAT.testfn = function(act)
+    local combatant = act.target
+    -- check if combatant is in combat
+    return combatant and combatant.components.combat and combatant.components.combat.target
+end
+
+ACTIONS.TTB_RETREAT.fn = function(act)
+    -- print("Running the TTB_RETREAT act fn")
+    if act.target and act.target.components.combat then
+        act.doer.components.talker:Say(STRINGS.CHARACTERS.GENERIC.ANNOUNCE_ACTIONS.TTB_RETREAT)
+        act.target.userfunctions.Retreat(act.target)
+    end
+
+    act.target.userfunctions.FollowPlayer(act.target, act.doer)
+
     return true
 end
