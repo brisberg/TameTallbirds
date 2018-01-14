@@ -5,7 +5,7 @@ name = "Tame Tallbirds"
 description = "Full-grown Tallbirds raised by the player will be friendly."
 
 author = "Keidence"
-version = "1.03"
+version = "1.04"
 forumthread = "None"
 icon_atlas = "modicon.xml"
 icon = "modicon.tex"
