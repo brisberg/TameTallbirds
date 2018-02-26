@@ -3,21 +3,22 @@ TUNING = _G.TUNING
 STRINGS = _G.STRINGS
 require = _G.require
 IsDLCEnabled = _G.IsDLCEnabled
-modimport('lib/bpx-lib/bpxinit')
+modimport("scripts/lib/bpx-lib/bpxinit.lua")
+print("loaded polyfills")
 
-for key, _ in ipairs(people) do
+for key, _ in pairs(GLOBAL.bpx) do
     print(key)
 end
 
 -- Add a prefabpostinit to teenbirds to make then select which type of adult they should grow up into.
 tweak_teenbird = require('tweaks/tweakteenbird')
 
-AddPrefabPostInit("teenbird", tweak_teenbird)
+AddPrefabPostInit('teenbird', tweak_teenbird)
 
 -- Add a prefabpostinit to smallbirds to remove as follower when they grow up
 tweak_smallbird = require('tweaks/tweaksmallbird')
 
-AddPrefabPostInit("smallbird", tweak_smallbird)
+AddPrefabPostInit('smallbird', tweak_smallbird)
 ------------------------------------------------------
 
 -- Define a new prefab for Tame Tallbirds
