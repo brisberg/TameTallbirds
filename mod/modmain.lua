@@ -3,6 +3,11 @@ TUNING = _G.TUNING
 STRINGS = _G.STRINGS
 require = _G.require
 IsDLCEnabled = _G.IsDLCEnabled
+modimport('lib/bpx-lib/bpxinit')
+
+for key, _ in ipairs(people) do
+    print(key)
+end
 
 -- Add a prefabpostinit to teenbirds to make then select which type of adult they should grow up into.
 tweak_teenbird = require('tweaks/tweakteenbird')
