@@ -308,6 +308,18 @@ local function loadfn(env)
     end
   end
 
+  -- Shipwrecked stuff
+  pf.MakePoisonableCharacter = function(...)
+    if TheSim:GetGameID() == "DS" and _G.SaveGameIndex:IsModeShipwrecked() then
+      _G.MakePoisonableCharacter(...)
+    end
+  end
+  pf.MakeInventoryFloatable = function(...)
+    if TheSim:GetGameID() == "DS" and _G.SaveGameIndex:IsModeShipwrecked() then
+      _G.MakeInventoryFloatable(...)
+    end
+  end
+
   -- GLOBAL.global('pfv')
   -- _G.pfv = pf
   return pf
