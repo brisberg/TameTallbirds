@@ -116,90 +116,97 @@ local function loadfn(env)
   -- post component init
   pf.AddComponentAction = function(actiontype, component, fn)
     if TheSim:GetGameID() == "DS" then
-      -- local comp = require("components/"..component)
-      -- print(comp:GetDebugString())
-      -- if comp.BPX_COMPONENT_ACTIONS == nil then
-      --   comp.BPX_COMPONENT_ACTIONS = {}
-      -- end
-      --
-      -- if comp.BPX_COMPONENT_ACTIONS[actiontype] == nil then
-      --   comp.BPX_COMPONENT_ACTIONS.actiontype = {}
-      -- end
-      --
-      -- table.insert(comp.BPX_COMPONENT_ACTIONS.actiontype, fn)
+      local comp = require("components/"..component)
+      print(comp:GetDebugString())
+      if comp.BPX_COMPONENT_ACTIONS == nil then
+        comp.BPX_COMPONENT_ACTIONS = {}
+      end
+
+      if comp.BPX_COMPONENT_ACTIONS[actiontype] == nil then
+        comp.BPX_COMPONENT_ACTIONS[actiontype] = {}
+      end
+
+      table.insert(comp.BPX_COMPONENT_ACTIONS[actiontype], fn)
+      for key, _ in pairs(comp.BPX_COMPONENT_ACTIONS[actiontype]) do
+          print(key.."fn")
+      end
     else
       env.AddComponentAction(actiontype, component, fn)
     end
   end
 
   local function AddBackCompatibleActions(self, inst)
+    print("ComponentPostInit fired")
     function self:CollectSceneActions(doer, actions, right)
+      -- print("CollectSceneActions")
+      inst.replicas = inst.components
       doer.replicas = doer.components
       for _,func in pairs(self.BPX_COMPONENT_ACTIONS.SCENE) do
-        func(self, doer, actions, right)
+        func(inst, doer, actions, right)
       end
       doer.replicas = nil
+      inst.replicas = nil
+    end
+
+    function self:CollectUseItemActions(doer, target, actions, right)
+      inst.replicas = inst.components
+      doer.replicas = doer.components
+      target.replicas = target.components
+      for _,func in pairs(self.BPX_COMPONENT_ACTIONS.USEITEM) do
+        func(inst, doer, target, actions, right)
+      end
+      doer.replicas = nil
+      target.replicas = nil
+      inst.replicas = nil
+    end
+
+    function self:CollectPointActions(doer, pos, actions, right)
+      inst.replicas = inst.components
+      doer.replicas = doer.components
+      target.replicas = target.components
+      for _,func in pairs(self.BPX_COMPONENT_ACTIONS.POINT) do
+        func(inst, doer, pos, actions, right)
+      end
+      doer.replicas = nil
+      target.replicas = nil
+      inst.replicas = nil
+    end
+
+    function self:CollectEquippedActions(doer, target, actions, right)
+      inst.replicas = inst.components
+      doer.replicas = doer.components
+      target.replicas = target.components
+      for _,func in pairs(self.BPX_COMPONENT_ACTIONS.EQUIPPED) do
+        func(inst, doer, target, actions, right)
+      end
+      doer.replicas = nil
+      target.replicas = nil
+      inst.replicas = nil
+    end
+
+    function self:CollectInventoryActions(doer, actions, right)
+      inst.replicas = inst.components
+      doer.replicas = doer.components
+      for _,func in pairs(self.BPX_COMPONENT_ACTIONS.INVENTORY) do
+        func(inst, doer, actions, right)
+      end
+      doer.replicas = nil
+      inst.replicas = nil
+    end
+
+    function self:CollectIsValidActions(action, right)
+      inst.replicas = inst.components
+      for _,func in pairs(self.BPX_COMPONENT_ACTIONS.ISVALID) do
+        func(inst, action, right)
+      end
+      inst.replicas = nil
     end
   end
 
   pf.EnableBackCompatibleActions = function(component)
     if TheSim:GetGameID() == "DS" then
+      print("EnableBackCompatibleActions called for DS")
       env.AddComponentPostInit(component, AddBackCompatibleActions)
-        -- print(component:GetDebugString())
-        -- print(self)
-        -- local meta = getmetatable(component)
-        -- meta.__index.CollectSceneActions = function(self, doer, actions, right)
-        --   doer.replicas = doer.components
-        --   for _,func in pairs(self.BPX_COMPONENT_ACTIONS.SCENE) do
-        --     func(self, doer, actions, right)
-        --   end
-        --   doer.replicas = nil
-        -- end
-        --
-        -- meta.__index.CollectUseItemActions = function(self, doer, target, actions, right)
-        --   doer.replicas = doer.components
-        --   target.replicas = target.components
-        --   for _,func in pairs(self.BPX_COMPONENT_ACTIONS.USEITEM) do
-        --     func(self, doer, target, actions, right)
-        --   end
-        --   doer.replicas = nil
-        --   target.replicas = nil
-        -- end
-        --
-        -- meta.__index.CollectPointActions = function(self, doer, pos, actions, right)
-        --   doer.replicas = doer.components
-        --   target.replicas = target.components
-        --   for _,func in pairs(self.BPX_COMPONENT_ACTIONS.POINT) do
-        --     func(self, doer, pos, actions, right)
-        --   end
-        --   doer.replicas = nil
-        --   target.replicas = nil
-        -- end
-        --
-        -- meta.__index.CollectEquippedActions = function(self, doer, target, actions, right)
-        --   doer.replicas = doer.components
-        --   target.replicas = target.components
-        --   for _,func in pairs(self.BPX_COMPONENT_ACTIONS.EQUIPPED) do
-        --     func(self, doer, target, actions, right)
-        --   end
-        --   doer.replicas = nil
-        --   target.replicas = nil
-        -- end
-        --
-        -- meta.__index.CollectInventoryActions = function(self, doer, actions, right)
-        --   doer.replicas = doer.components
-        --   for _,func in pairs(self.BPX_COMPONENT_ACTIONS.INVENTORY) do
-        --     func(self, doer, actions, right)
-        --   end
-        --   doer.replicas = nil
-        -- end
-        --
-        -- meta.__index.CollectIsValidActions = function(self, action, right)
-        --   for _,func in pairs(self.BPX_COMPONENT_ACTIONS.ISVALID) do
-        --     func(self, action, right)
-        --   end
-        -- end
-      -- end)
     end
     -- No effect for DST
   end
