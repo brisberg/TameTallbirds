@@ -133,33 +133,49 @@ local function loadfn(env)
     if TheSim:GetGameID() == "DS" then
       env.AddClassPostConstruct(package, function(self)
         function self:CollectSceneActions(doer, actions, right)
+          doer.replicas = doer.components
           for _,func in pairs(self.BPX_COMPONENT_ACTIONS.SCENE) do
             func(self, doer, actions, right)
           end
+          doer.replicas = nil
         end
 
         function self:CollectUseItemActions(doer, target, actions, right)
+          doer.replicas = doer.components
+          target.replicas = target.components
           for _,func in pairs(self.BPX_COMPONENT_ACTIONS.USEITEM) do
             func(self, doer, target, actions, right)
           end
+          doer.replicas = nil
+          target.replicas = nil
         end
 
         function self:CollectPointActions(doer, pos, actions, right)
+          doer.replicas = doer.components
+          target.replicas = target.components
           for _,func in pairs(self.BPX_COMPONENT_ACTIONS.POINT) do
             func(self, doer, pos, actions, right)
           end
+          doer.replicas = nil
+          target.replicas = nil
         end
 
         function self:CollectEquippedActions(doer, target, actions, right)
+          doer.replicas = doer.components
+          target.replicas = target.components
           for _,func in pairs(self.BPX_COMPONENT_ACTIONS.EQUIPPED) do
             func(self, doer, target, actions, right)
           end
+          doer.replicas = nil
+          target.replicas = nil
         end
 
         function self:CollectInventoryActions(doer, actions, right)
+          doer.replicas = doer.components
           for _,func in pairs(self.BPX_COMPONENT_ACTIONS.INVENTORY) do
             func(self, doer, actions, right)
           end
+          doer.replicas = nil
         end
 
         function self:CollectIsValidActions(action, right)
@@ -314,10 +330,113 @@ local function loadfn(env)
       _G.MakePoisonableCharacter(...)
     end
   end
+
   pf.MakeInventoryFloatable = function(...)
     if TheSim:GetGameID() == "DS" and _G.SaveGameIndex:IsModeShipwrecked() then
       _G.MakeInventoryFloatable(...)
     end
+  end
+
+  pf.AddTreasurePreInit = function(...)
+    if TheSim:GetGameID() == "DS" and _G.SaveGameIndex:IsModeShipwrecked() then
+      env.AddTreasurePreInit(...)
+    else
+      print("Warning ["..modname.."]: AddTreasurePreInit only supported in Shipwrecked.")
+    end
+  end
+
+  pf.AddTreasureLootPreInit = function(...)
+    if TheSim:GetGameID() == "DS" and _G.SaveGameIndex:IsModeShipwrecked() then
+      env.AddTreasureLootPreInit(...)
+    else
+      print("Warning ["..modname.."]: AddTreasureLootPreInit only supported in Shipwrecked.")
+    end
+  end
+
+  pf.AddTreasure = function(...)
+    if TheSim:GetGameID() == "DS" and _G.SaveGameIndex:IsModeShipwrecked() then
+      env.AddTreasure(...)
+    else
+      print("Warning ["..modname.."]: AddTreasure only supported in Shipwrecked.")
+    end
+  end
+
+  pf.AddTreasureLoot = function(...)
+    if TheSim:GetGameID() == "DS" and _G.SaveGameIndex:IsModeShipwrecked() then
+      env.AddTreasureLoot(...)
+    else
+      print("Warning ["..modname.."]: AddTreasureLoot only supported in Shipwrecked.")
+    end
+  end
+
+  -- DST polyfills
+  pf.CreateEntity = function()
+    if TheSim:GetGameID() == "DS" then
+      local inst = _G.CreateEntity()
+      local entity = getmetatable(inst.entity)
+      entity.__index.AddNetwork = function(...) end
+      entity.__index.SetPristine = function(...) end
+      return ent
+    else
+      return _G.CreateEntity()
+    end
+  end
+
+  pf.
+
+  pf.CreatePrefabSkin = function(name, info)
+    if TheSim:GetGameID() == "DS" then
+      -- Dummy prefab just to load the skin assets, character prefab will use
+      -- assets that match their prefab name by default.
+      return Prefab(name, nil, info.assets, info.prefabs)
+    else
+      return _G.CreatePrefabSkin(name, info)
+    end
+  end
+
+  -- Hauntables
+  pf.MakeHauntableLaun = _G.MakeHauntableLaun
+  pf.MakeHauntableLaunchAndSmash = _G.MakeHauntableLaunchAndSmash
+  pf.MakeHauntableWork = _G.MakeHauntableWork
+  pf.MakeHauntableWorkAndIgnite = _G.MakeHauntableWorkAndIgnite
+  pf.MakeHauntableFreeze = _G.MakeHauntableFreeze
+  pf.MakeHauntableIgnite = _G.MakeHauntableIgnite
+  pf.MakeHauntableLaunchAndIgnite = _G.MakeHauntableLaunchAndIgnite
+  pf.DoChangePrefab = _G.DoChangePrefab
+  pf.MakeHauntableChangePrefab = _G.MakeHauntableChangePrefab
+  pf.MakeHauntableLaunchOrChangePrefab = _G.MakeHauntableLaunchOrChangePrefab
+  pf.MakeHauntablePerish = _G.MakeHauntablePerish
+  pf.MakeHauntableLaunchAndPerish = _G.MakeHauntableLaunchAndPerish
+  pf.MakeHauntablePanic = _G.MakeHauntablePanic
+  pf.MakeHauntablePanicAndIgnite = _G.MakeHauntablePanicAndIgnite
+  pf.MakeHauntablePlayAnim = _G.MakeHauntablePlayAnim
+  pf.MakeHauntableGoToState = _G.MakeHauntableGoToState
+  pf.MakeHauntableDropFirstItem = _G.MakeHauntableDropFirstItem
+  pf.MakeHauntableLaunchAndDropFirstItem = _G.MakeHauntableLaunchAndDropFirstItem
+  pf.AddHauntableCustomReaction = _G.AddHauntableCustomReaction
+  pf.AddHauntableDropItemOrWork = _G.AddHauntableDropItemOrWork
+
+  if TheSim:GetGameID() == "DS" then
+    pf.MakeHauntableLaun = function(...) end
+    pf.MakeHauntableLaunchAndSmash = function(...) end
+    pf.MakeHauntableWork = function(...) end
+    pf.MakeHauntableWorkAndIgnite = function(...) end
+    pf.MakeHauntableFreeze = function(...) end
+    pf.MakeHauntableIgnite = function(...) end
+    pf.MakeHauntableLaunchAndIgnite = function(...) end
+    pf.DoChangePrefab = function(...) end
+    pf.MakeHauntableChangePrefab = function(...) end
+    pf.MakeHauntableLaunchOrChangePrefab = function(...) end
+    pf.MakeHauntablePerish = function(...) end
+    pf.MakeHauntableLaunchAndPerish = function(...) end
+    pf.MakeHauntablePanic = function(...) end
+    pf.MakeHauntablePanicAndIgnite = function(...) end
+    pf.MakeHauntablePlayAnim = function(...) end
+    pf.MakeHauntableGoToState = function(...) end
+    pf.MakeHauntableDropFirstItem = function(...) end
+    pf.MakeHauntableLaunchAndDropFirstItem = function(...) end
+    pf.AddHauntableCustomReaction = function(...) end
+    pf.AddHauntableDropItemOrWork = function(...) end
   end
 
   -- GLOBAL.global('pfv')
