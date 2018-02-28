@@ -1,73 +1,61 @@
-local ACTIONS = _G.ACTIONS
+local Action = GLOBAL.Action
+local ActionHandler = GLOBAL.ActionHandler
+local languageStrings = require('lang/' .. GetModConfigData("LANGUAGE"))
+local bpx = GLOBAL.bpx
 
 -- Stay Action
-ACTIONS.TTB_STAYHERE = {
-    id = "TTB_STAYHERE",
-    priority = 1,
-    strfn = nil,
-    testfn = nil,
-    instant = false,
-    rmb = true,
-    distance = 3,
-}
-
-ACTIONS.TTB_STAYHERE.fn = function(act)
-    -- print("Running the TTB_STAYHERE act fn")
-    if act.doer.components.talker then
-        -- print("   Say 'Stay Here'")
-        act.doer.components.talker:Say(STRINGS.CHARACTERS.GENERIC.ANNOUNCE_ACTIONS.TTB_STAYHERE)
-    end
-    -- print("   Unfollow Player")
-    act.target.userfunctions.UnfollowPlayer(act.target, act.doer)
-    return true
-end
+local TTB_STAYHERE = bpx.AddAction("TTB_STAYHERE", languageStrings.STAY_ACTION.NAME, function(act)
+  -- print("Running the TTB_STAYHERE act fn")
+  if act.doer.components.talker then
+      -- print("   Say 'Stay Here'")
+      act.doer.components.talker:Say(STRINGS.CHARACTERS.GENERIC.ANNOUNCE_ACTIONS.TTB_STAYHERE)
+  end
+  -- print("   Unfollow Player")
+  act.target.userfunctions.UnfollowPlayer(act.target, act.doer)
+  return true
+end)
+TTB_STAYHERE.priority = 1
+TTB_STAYHERE.rmb = true
+TTB_STAYHERE.distance = 3
 
 -- Follow Action
-ACTIONS.TTB_FOLLOW = {
-    id = "TTB_FOLLOW",
-    priority = 1,
-    strfn = nil,
-    testfn = nil,
-    instant = false,
-    rmb = true,
-    distance = 3,
-}
-
-ACTIONS.TTB_FOLLOW.fn = function(act)
-    -- print("Running the TTB_FOLLOW act fn")
-    if act.doer.components.talker then
-        -- print("   Say 'Let's go big guy'")
-        act.doer.components.talker:Say(STRINGS.CHARACTERS.GENERIC.ANNOUNCE_ACTIONS.TTB_FOLLOW)
-    end
-    -- print("   Unfollow Player")
-    act.target.userfunctions.FollowPlayer(act.target, act.doer)
-    return true
-end
+local TTB_FOLLOW = bpx.AddAction("TTB_FOLLOW", languageStrings.FOLLOW_ACTION.NAME, function(act)
+  -- print("Running the TTB_FOLLOW act fn")
+  if act.doer.components.talker then
+      -- print("   Say 'Let's go big guy'")
+      act.doer.components.talker:Say(STRINGS.CHARACTERS.GENERIC.ANNOUNCE_ACTIONS.TTB_FOLLOW)
+  end
+  -- print("   Unfollow Player")
+  act.target.userfunctions.FollowPlayer(act.target, act.doer)
+  return true
+end)
+TTB_FOLLOW.priority = 1
+TTB_FOLLOW.rmb = true
+TTB_FOLLOW.distance = 3
 
 -- Retreat Action
-ACTIONS.TTB_RETREAT = {
-    id = "TTB_RETREAT",
-    priority = 2,
-    strfn = nil,
-    testfn = nil,
-    instant = true,
-    rmb = true,
-}
+local TTB_RETREAT = bpx.AddAction("TTB_RETREAT", languageStrings.RETREAT_ACTION.NAME, function(act)
+  -- print("Running the TTB_RETREAT act fn")
+  if act.target and act.target.components.combat then
+      act.doer.components.talker:Say(STRINGS.CHARACTERS.GENERIC.ANNOUNCE_ACTIONS.TTB_RETREAT)
+      act.target.userfunctions.Retreat(act.target)
+  end
 
-ACTIONS.TTB_RETREAT.testfn = function(act)
+  act.target.userfunctions.FollowPlayer(act.target, act.doer)
+
+  return true
+end)
+TTB_RETREAT.priority = 2
+TTB_RETREAT.instant = true
+TTB_RETREAT.rmb = true
+TTB_RETREAT.testfn = function(act)
     local combatant = act.target
     -- check if combatant is in combat
     return combatant and combatant.components.combat and combatant.components.combat.target
 end
 
-ACTIONS.TTB_RETREAT.fn = function(act)
-    -- print("Running the TTB_RETREAT act fn")
-    if act.target and act.target.components.combat then
-        act.doer.components.talker:Say(STRINGS.CHARACTERS.GENERIC.ANNOUNCE_ACTIONS.TTB_RETREAT)
-        act.target.userfunctions.Retreat(act.target)
-    end
 
-    act.target.userfunctions.FollowPlayer(act.target, act.doer)
-
-    return true
-end
+bpx.AddStategraphActionHandler("wilson",ActionHandler(TTB_STAYHERE))
+bpx.AddStategraphActionHandler("wilson_client",ActionHandler(TTB_STAYHERE))
+bpx.AddStategraphActionHandler("wilson",ActionHandler(TTB_FOLLOW))
+bpx.AddStategraphActionHandler("wilson_client",ActionHandler(TTB_FOLLOW))

@@ -106,84 +106,100 @@ local function loadfn(env)
         fn = fn
       }
       env.AddAction(action)
+      return action
     else
-      env.AddAction(id, str, fn)
+      return env.AddAction(id, str, fn)
     end
   end
 
-  -- Need to do this
+  -- Cache component actions on the component class, we will remap them in
+  -- post component init
   pf.AddComponentAction = function(actiontype, component, fn)
     if TheSim:GetGameID() == "DS" then
-      local comp = require("components/"..component)
-      if comp.BPX_COMPONENT_ACTIONS == nil then
-        comp.BPX_COMPONENT_ACTIONS = {}
-      end
-
-      if comp.BPX_COMPONENT_ACTIONS[actiontype] == nil then
-        comp.BPX_COMPONENT_ACTIONS.actiontype = {}
-      end
-
-      table.insert(comp.BPX_COMPONENT_ACTIONS.actiontype, fn)
+      -- local comp = require("components/"..component)
+      -- print(comp:GetDebugString())
+      -- if comp.BPX_COMPONENT_ACTIONS == nil then
+      --   comp.BPX_COMPONENT_ACTIONS = {}
+      -- end
+      --
+      -- if comp.BPX_COMPONENT_ACTIONS[actiontype] == nil then
+      --   comp.BPX_COMPONENT_ACTIONS.actiontype = {}
+      -- end
+      --
+      -- table.insert(comp.BPX_COMPONENT_ACTIONS.actiontype, fn)
     else
       env.AddComponentAction(actiontype, component, fn)
     end
   end
 
-  pf.EnableBackCompatibleActions = function(package)
+  local function AddBackCompatibleActions(self, inst)
+    function self:CollectSceneActions(doer, actions, right)
+      doer.replicas = doer.components
+      for _,func in pairs(self.BPX_COMPONENT_ACTIONS.SCENE) do
+        func(self, doer, actions, right)
+      end
+      doer.replicas = nil
+    end
+  end
+
+  pf.EnableBackCompatibleActions = function(component)
     if TheSim:GetGameID() == "DS" then
-      env.AddClassPostConstruct(package, function(self)
-        function self:CollectSceneActions(doer, actions, right)
-          doer.replicas = doer.components
-          for _,func in pairs(self.BPX_COMPONENT_ACTIONS.SCENE) do
-            func(self, doer, actions, right)
-          end
-          doer.replicas = nil
-        end
-
-        function self:CollectUseItemActions(doer, target, actions, right)
-          doer.replicas = doer.components
-          target.replicas = target.components
-          for _,func in pairs(self.BPX_COMPONENT_ACTIONS.USEITEM) do
-            func(self, doer, target, actions, right)
-          end
-          doer.replicas = nil
-          target.replicas = nil
-        end
-
-        function self:CollectPointActions(doer, pos, actions, right)
-          doer.replicas = doer.components
-          target.replicas = target.components
-          for _,func in pairs(self.BPX_COMPONENT_ACTIONS.POINT) do
-            func(self, doer, pos, actions, right)
-          end
-          doer.replicas = nil
-          target.replicas = nil
-        end
-
-        function self:CollectEquippedActions(doer, target, actions, right)
-          doer.replicas = doer.components
-          target.replicas = target.components
-          for _,func in pairs(self.BPX_COMPONENT_ACTIONS.EQUIPPED) do
-            func(self, doer, target, actions, right)
-          end
-          doer.replicas = nil
-          target.replicas = nil
-        end
-
-        function self:CollectInventoryActions(doer, actions, right)
-          doer.replicas = doer.components
-          for _,func in pairs(self.BPX_COMPONENT_ACTIONS.INVENTORY) do
-            func(self, doer, actions, right)
-          end
-          doer.replicas = nil
-        end
-
-        function self:CollectIsValidActions(action, right)
-          for _,func in pairs(self.BPX_COMPONENT_ACTIONS.ISVALID) do
-            func(self, action, right)
-          end
-        end
-      end)
+      env.AddComponentPostInit(component, AddBackCompatibleActions)
+        -- print(component:GetDebugString())
+        -- print(self)
+        -- local meta = getmetatable(component)
+        -- meta.__index.CollectSceneActions = function(self, doer, actions, right)
+        --   doer.replicas = doer.components
+        --   for _,func in pairs(self.BPX_COMPONENT_ACTIONS.SCENE) do
+        --     func(self, doer, actions, right)
+        --   end
+        --   doer.replicas = nil
+        -- end
+        --
+        -- meta.__index.CollectUseItemActions = function(self, doer, target, actions, right)
+        --   doer.replicas = doer.components
+        --   target.replicas = target.components
+        --   for _,func in pairs(self.BPX_COMPONENT_ACTIONS.USEITEM) do
+        --     func(self, doer, target, actions, right)
+        --   end
+        --   doer.replicas = nil
+        --   target.replicas = nil
+        -- end
+        --
+        -- meta.__index.CollectPointActions = function(self, doer, pos, actions, right)
+        --   doer.replicas = doer.components
+        --   target.replicas = target.components
+        --   for _,func in pairs(self.BPX_COMPONENT_ACTIONS.POINT) do
+        --     func(self, doer, pos, actions, right)
+        --   end
+        --   doer.replicas = nil
+        --   target.replicas = nil
+        -- end
+        --
+        -- meta.__index.CollectEquippedActions = function(self, doer, target, actions, right)
+        --   doer.replicas = doer.components
+        --   target.replicas = target.components
+        --   for _,func in pairs(self.BPX_COMPONENT_ACTIONS.EQUIPPED) do
+        --     func(self, doer, target, actions, right)
+        --   end
+        --   doer.replicas = nil
+        --   target.replicas = nil
+        -- end
+        --
+        -- meta.__index.CollectInventoryActions = function(self, doer, actions, right)
+        --   doer.replicas = doer.components
+        --   for _,func in pairs(self.BPX_COMPONENT_ACTIONS.INVENTORY) do
+        --     func(self, doer, actions, right)
+        --   end
+        --   doer.replicas = nil
+        -- end
+        --
+        -- meta.__index.CollectIsValidActions = function(self, action, right)
+        --   for _,func in pairs(self.BPX_COMPONENT_ACTIONS.ISVALID) do
+        --     func(self, action, right)
+        --   end
+        -- end
+      -- end)
     end
     -- No effect for DST
   end
@@ -376,13 +392,11 @@ local function loadfn(env)
       local entity = getmetatable(inst.entity)
       entity.__index.AddNetwork = function(...) end
       entity.__index.SetPristine = function(...) end
-      return ent
+      return inst
     else
       return _G.CreateEntity()
     end
   end
-
-  pf.
 
   pf.CreatePrefabSkin = function(name, info)
     if TheSim:GetGameID() == "DS" then
@@ -395,29 +409,8 @@ local function loadfn(env)
   end
 
   -- Hauntables
-  pf.MakeHauntableLaun = _G.MakeHauntableLaun
-  pf.MakeHauntableLaunchAndSmash = _G.MakeHauntableLaunchAndSmash
-  pf.MakeHauntableWork = _G.MakeHauntableWork
-  pf.MakeHauntableWorkAndIgnite = _G.MakeHauntableWorkAndIgnite
-  pf.MakeHauntableFreeze = _G.MakeHauntableFreeze
-  pf.MakeHauntableIgnite = _G.MakeHauntableIgnite
-  pf.MakeHauntableLaunchAndIgnite = _G.MakeHauntableLaunchAndIgnite
-  pf.DoChangePrefab = _G.DoChangePrefab
-  pf.MakeHauntableChangePrefab = _G.MakeHauntableChangePrefab
-  pf.MakeHauntableLaunchOrChangePrefab = _G.MakeHauntableLaunchOrChangePrefab
-  pf.MakeHauntablePerish = _G.MakeHauntablePerish
-  pf.MakeHauntableLaunchAndPerish = _G.MakeHauntableLaunchAndPerish
-  pf.MakeHauntablePanic = _G.MakeHauntablePanic
-  pf.MakeHauntablePanicAndIgnite = _G.MakeHauntablePanicAndIgnite
-  pf.MakeHauntablePlayAnim = _G.MakeHauntablePlayAnim
-  pf.MakeHauntableGoToState = _G.MakeHauntableGoToState
-  pf.MakeHauntableDropFirstItem = _G.MakeHauntableDropFirstItem
-  pf.MakeHauntableLaunchAndDropFirstItem = _G.MakeHauntableLaunchAndDropFirstItem
-  pf.AddHauntableCustomReaction = _G.AddHauntableCustomReaction
-  pf.AddHauntableDropItemOrWork = _G.AddHauntableDropItemOrWork
-
   if TheSim:GetGameID() == "DS" then
-    pf.MakeHauntableLaun = function(...) end
+    pf.MakeHauntableLaunch = function(...) end
     pf.MakeHauntableLaunchAndSmash = function(...) end
     pf.MakeHauntableWork = function(...) end
     pf.MakeHauntableWorkAndIgnite = function(...) end
@@ -437,6 +430,27 @@ local function loadfn(env)
     pf.MakeHauntableLaunchAndDropFirstItem = function(...) end
     pf.AddHauntableCustomReaction = function(...) end
     pf.AddHauntableDropItemOrWork = function(...) end
+  else
+    pf.MakeHauntableLaunch = _G.MakeHauntableLaunch
+    pf.MakeHauntableLaunchAndSmash = _G.MakeHauntableLaunchAndSmash
+    pf.MakeHauntableWork = _G.MakeHauntableWork
+    pf.MakeHauntableWorkAndIgnite = _G.MakeHauntableWorkAndIgnite
+    pf.MakeHauntableFreeze = _G.MakeHauntableFreeze
+    pf.MakeHauntableIgnite = _G.MakeHauntableIgnite
+    pf.MakeHauntableLaunchAndIgnite = _G.MakeHauntableLaunchAndIgnite
+    pf.DoChangePrefab = _G.DoChangePrefab
+    pf.MakeHauntableChangePrefab = _G.MakeHauntableChangePrefab
+    pf.MakeHauntableLaunchOrChangePrefab = _G.MakeHauntableLaunchOrChangePrefab
+    pf.MakeHauntablePerish = _G.MakeHauntablePerish
+    pf.MakeHauntableLaunchAndPerish = _G.MakeHauntableLaunchAndPerish
+    pf.MakeHauntablePanic = _G.MakeHauntablePanic
+    pf.MakeHauntablePanicAndIgnite = _G.MakeHauntablePanicAndIgnite
+    pf.MakeHauntablePlayAnim = _G.MakeHauntablePlayAnim
+    pf.MakeHauntableGoToState = _G.MakeHauntableGoToState
+    pf.MakeHauntableDropFirstItem = _G.MakeHauntableDropFirstItem
+    pf.MakeHauntableLaunchAndDropFirstItem = _G.MakeHauntableLaunchAndDropFirstItem
+    pf.AddHauntableCustomReaction = _G.AddHauntableCustomReaction
+    pf.AddHauntableDropItemOrWork = _G.AddHauntableDropItemOrWork
   end
 
   -- GLOBAL.global('pfv')

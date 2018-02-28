@@ -243,10 +243,16 @@ end
 local function create_tame_tallbird()
     -- print("tametallbird - create_tame_tallbird")
 
-    local inst = CreateEntity()
+    local inst = bpx.CreateEntity()
 
     inst.entity:AddTransform()
     inst.entity:AddAnimState()
+    inst.entity:AddSoundEmitter()
+    inst.entity:AddDynamicShadow()
+    inst.entity:AddNetwork()
+
+		MakeCharacterPhysics(inst, 10, .5)
+
     inst.AnimState:SetBuild("ds_tallbird_basic")
     inst.AnimState:SetBank("tallbird")
     inst.AnimState:PlayAnimation("idle")
@@ -259,10 +265,6 @@ local function create_tame_tallbird()
     inst:AddTag("tametallbird")
     inst:AddTag("notraptrigger") -- Avoids tooth traps and beemines
 
-    inst.entity:AddSoundEmitter()
-    inst.entity:AddDynamicShadow()
-
-    MakeCharacterPhysics(inst, 10, .5)
 
     -- if IsDLCEnabled(CAPY_DLC) then
     bpx.MakePoisonableCharacter(inst)
@@ -275,6 +277,12 @@ local function create_tame_tallbird()
     inst.Physics:CollidesWith(COLLISION.CHARACTERS)
 
     inst.Transform:SetFourFaced()
+
+		inst.entity:SetPristine()
+
+		-- if not TheWorld.ismastersim then
+    --     return inst
+    -- end
 
     inst:SetBrain(brain)
 
@@ -329,6 +337,7 @@ local function create_tame_tallbird()
     inst.DynamicShadow:SetSize(2.75, 1)
     MakeLargeBurnableCharacter(inst, "head")
     MakeMediumFreezableCharacter(inst, "head")
+		bpx.MakeHauntablePanic(inst)
 
     inst.components.health:SetMaxHealth(TUNING.TAME_TALLBIRD_HEALTH)
     inst:ListenForEvent("healthdelta", OnHealthDelta)

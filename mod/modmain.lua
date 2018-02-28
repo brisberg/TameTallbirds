@@ -1,8 +1,8 @@
-_G = GLOBAL
-TUNING = _G.TUNING
-STRINGS = _G.STRINGS
-require = _G.require
-IsDLCEnabled = _G.IsDLCEnabled
+-- _G = GLOBAL
+TUNING = GLOBAL.TUNING
+STRINGS = GLOBAL.STRINGS
+require = GLOBAL.require
+IsDLCEnabled = GLOBAL.IsDLCEnabled
 modimport("scripts/lib/bpx-lib/bpxinit.lua")
 print("loaded polyfills")
 
@@ -29,9 +29,9 @@ PrefabFiles = {'tametallbird'}
 local languageStrings = require('lang/' .. GetModConfigData("LANGUAGE"))
 STRINGS.NAMES.TAMETALLBIRD = languageStrings.TAMETALLBIRD_NAME
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.TAMETALLBIRD = languageStrings.TAMETALLBIRD_DESCRIBE
-STRINGS.ACTIONS.TTB_STAYHERE = languageStrings.STAY_ACTION.NAME
-STRINGS.ACTIONS.TTB_FOLLOW = languageStrings.FOLLOW_ACTION.NAME
-STRINGS.ACTIONS.TTB_RETREAT = languageStrings.RETREAT_ACTION.NAME
+-- STRINGS.ACTIONS.TTB_STAYHERE = languageStrings.STAY_ACTION.NAME
+-- STRINGS.ACTIONS.TTB_FOLLOW = languageStrings.FOLLOW_ACTION.NAME
+-- STRINGS.ACTIONS.TTB_RETREAT = languageStrings.RETREAT_ACTION.NAME
 STRINGS.CHARACTERS.GENERIC.ANNOUNCE_ACTIONS = {
     TTB_STAYHERE = languageStrings.STAY_ACTION.ANNOUNCE,
     TTB_FOLLOW = languageStrings.FOLLOW_ACTION.ANNOUNCE,
@@ -40,11 +40,7 @@ STRINGS.CHARACTERS.GENERIC.ANNOUNCE_ACTIONS = {
 
 ------------------------------------------------------
 -- Load the custom actions
-require('actions/actions')
-ActionHandler = GLOBAL.ActionHandler
-
-AddStategraphActionHandler("wilson",ActionHandler(GLOBAL.ACTIONS.TTB_STAYHERE))
-AddStategraphActionHandler("wilson",ActionHandler(GLOBAL.ACTIONS.TTB_FOLLOW))
+modimport "scripts/actions/actions.lua"
 
 ------------------------------------------------------
 -- Tuning Values for Tame Tallbirds
