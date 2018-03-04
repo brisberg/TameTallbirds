@@ -4,11 +4,10 @@ STRINGS = GLOBAL.STRINGS
 require = GLOBAL.require
 IsDLCEnabled = GLOBAL.IsDLCEnabled
 modimport("scripts/lib/bpx-lib/bpxinit.lua")
-print("loaded polyfills")
 
-for key, _ in pairs(GLOBAL.bpx) do
-    print(key)
-end
+-- for key, _ in pairs(GLOBAL.bpx) do
+--     print(key)
+-- end
 
 -- Add a prefabpostinit to teenbirds to make then select which type of adult they should grow up into.
 tweak_teenbird = require('tweaks/tweakteenbird')

@@ -55,11 +55,9 @@ TTB_RETREAT.testfn = function(act)
 end
 
 bpx.AddComponentAction("SCENE", "ttb_pet", function(inst, doer, actions, right)
-  print("Collect Scene Actions for ttb_pet")
+  -- print("Collect Scene Actions for ttb_pet")
   if right then
-    print("right")
     if inst.replica.follower then
-      print("follower")
       if inst.replica.follower:GetLeader() == doer then
         table.insert(actions, GLOBAL.ACTIONS.TTB_STAYHERE)
       end
@@ -68,7 +66,6 @@ bpx.AddComponentAction("SCENE", "ttb_pet", function(inst, doer, actions, right)
       end
     end
     if inst.replica.combat and inst.replica.combat:GetTarget() then
-      print("combat and target")
       table.insert(actions, GLOBAL.ACTIONS.TTB_RETREAT)
     end
   end

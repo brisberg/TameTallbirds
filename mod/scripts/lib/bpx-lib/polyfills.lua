@@ -171,10 +171,10 @@ local function loadfn(env)
   -- Create a custom action collection function on the component for the
   -- specified action.
   pf.AddComponentAction = function(actiontype, component, fn)
-    print("polyfill AddComponentAction")
+    -- print("polyfill AddComponentAction")
     if TheSim:GetGameID() == "DS" then
       local comp = require("components/"..component)
-      print(comp:GetDebugString())
+      -- print(comp:GetDebugString())
       AddActionCollectorFn(actiontype, comp, fn)
     else
       env.AddComponentAction(actiontype, component, fn)
