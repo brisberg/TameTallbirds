@@ -83,13 +83,13 @@ local function UnfollowPlayer(inst, player)
     end
 end
 
-local function CanEatTest(inst, item)
-    -- deprecated
-    --print("tametallbird - CanEatTest", inst.name, item.components.edible.foodtype, item, item.prefab)
-    local canEat = not (item.prefab == "tallbirdegg" or item.prefab == "tallbirdegg_cracked" or item.prefab == "tallbirdegg_cooked")
-    --print("   canEat?", canEat)
-    return canEat
-end
+-- local function CanEatTest(inst, item)
+--     -- deprecated
+--     --print("tametallbird - CanEatTest", inst.name, item.components.edible.foodtype, item, item.prefab)
+--     local canEat = not (item.prefab == "tallbirdegg" or item.prefab == "tallbirdegg_cracked" or item.prefab == "tallbirdegg_cooked")
+--     --print("   canEat?", canEat)
+--     return canEat
+-- end
 
 local function ShouldAcceptItem(inst, item)
     --print("tametallbird - ShouldAcceptItem", inst.name, item.name)
@@ -240,6 +240,13 @@ local function OnHealthDelta(inst, data)
     end
 end
 
+-- https://forums.kleientertainment.com/topic/67092-preventing-characters-from-eating-specific-food-items/
+local forbidden_foods = {
+	tallbirdegg = true,
+	tallbirdegg_crached = true,
+	tallbirdegg_cooked = true,
+}
+
 local function create_tame_tallbird()
     -- print("tametallbird - create_tame_tallbird")
 
@@ -265,10 +272,7 @@ local function create_tame_tallbird()
     inst:AddTag("tametallbird")
     inst:AddTag("notraptrigger") -- Avoids tooth traps and beemines
 
-
-    -- if IsDLCEnabled(CAPY_DLC) then
     bpx.MakePoisonableCharacter(inst)
-    -- end
 
     inst.Physics:SetCollisionGroup(COLLISION.CHARACTERS)
     inst.Physics:ClearCollisionMask()
@@ -280,9 +284,9 @@ local function create_tame_tallbird()
 
 		inst.entity:SetPristine()
 
-		-- if not TheWorld.ismastersim then
-    --     return inst
-    -- end
+		if not TheWorld.ismastersim then
+        return inst
+    end
 
     inst:SetBrain(brain)
 
@@ -313,9 +317,14 @@ local function create_tame_tallbird()
     inst:AddComponent("knownLocations")
 
     inst:AddComponent("eater")
-    inst.components.eater:SetOmnivore()
+    -- inst.components.eater:SetOmnivore()
+    inst.components.eater:SetDiet({ FOODGROUP.OMNI }, { FOODGROUP.OMNI })
     inst.components.eater:SetOnEatFn(OnEat)
-    inst.components.eater:SetCanEatTestFn(CanEatTest)
+		local _CanEat = inst.components.eater.CanEat
+		inst.components.eater.CanEat = function(self, food)
+			return _CanEat(self, food) and not forbidden_foods[food.prefab]
+		end
+    -- inst.components.eater:SetCanEatTestFn(CanEatTest)
 
     inst:AddComponent("sleeper")
     inst.components.sleeper:SetResistance(3)

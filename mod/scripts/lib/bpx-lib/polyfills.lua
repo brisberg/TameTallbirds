@@ -115,6 +115,7 @@ local function loadfn(env)
   -- Cache component actions on the component class, we will remap them in
   -- post component init
   pf.AddComponentAction = function(actiontype, component, fn)
+    print("polyfill AddComponentAction")
     if TheSim:GetGameID() == "DS" then
       local comp = require("components/"..component)
       print(comp:GetDebugString())
@@ -205,7 +206,7 @@ local function loadfn(env)
 
   pf.EnableBackCompatibleActions = function(component)
     if TheSim:GetGameID() == "DS" then
-      print("EnableBackCompatibleActions called for DS")
+      print("EnableBackCompatibleActions called for "..component)
       env.AddComponentPostInit(component, AddBackCompatibleActions)
     end
     -- No effect for DST
@@ -424,7 +425,7 @@ local function loadfn(env)
     pf.MakeHauntableFreeze = function(...) end
     pf.MakeHauntableIgnite = function(...) end
     pf.MakeHauntableLaunchAndIgnite = function(...) end
-    pf.DoChangePrefab = function(...) end
+    -- pf.DoChangePrefab = function(...) end
     pf.MakeHauntableChangePrefab = function(...) end
     pf.MakeHauntableLaunchOrChangePrefab = function(...) end
     pf.MakeHauntablePerish = function(...) end
@@ -445,7 +446,7 @@ local function loadfn(env)
     pf.MakeHauntableFreeze = _G.MakeHauntableFreeze
     pf.MakeHauntableIgnite = _G.MakeHauntableIgnite
     pf.MakeHauntableLaunchAndIgnite = _G.MakeHauntableLaunchAndIgnite
-    pf.DoChangePrefab = _G.DoChangePrefab
+    -- pf.DoChangePrefab = _G.DoChangePrefab
     pf.MakeHauntableChangePrefab = _G.MakeHauntableChangePrefab
     pf.MakeHauntableLaunchOrChangePrefab = _G.MakeHauntableLaunchOrChangePrefab
     pf.MakeHauntablePerish = _G.MakeHauntablePerish
@@ -458,6 +459,20 @@ local function loadfn(env)
     pf.MakeHauntableLaunchAndDropFirstItem = _G.MakeHauntableLaunchAndDropFirstItem
     pf.AddHauntableCustomReaction = _G.AddHauntableCustomReaction
     pf.AddHauntableDropItemOrWork = _G.AddHauntableDropItemOrWork
+  end
+
+  pf.SpringCombatMod = function(amount)
+    if TheSim:GetGameID() == "DS" then
+      if GetSeasonManager() then
+          if (IsDLCEnabled(REIGN_OF_GIANTS) and GetSeasonManager():IsSpring()) or (IsDLCEnabled(CAPY_DLC) and GetSeasonManager():IsGreenSeason()) then
+              return amount * TUNING.SPRING_COMBAT_MOD
+          end
+      else
+          return amount
+      end
+    else
+      return _G.SpringCombatMod(amount)
+    end
   end
 
   -- GLOBAL.global('pfv')
