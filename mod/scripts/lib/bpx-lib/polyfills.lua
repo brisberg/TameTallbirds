@@ -112,104 +112,73 @@ local function loadfn(env)
     end
   end
 
-  -- Cache component actions on the component class, we will remap them in
-  -- post component init
+  local function AddActionCollectorFn(actiontype, comp, fn)
+    if actiontype == "SCENE" then
+      function comp:CollectSceneActions(doer, actions, right)
+        self.inst.replica = self.inst.components
+        doer.replica = doer.components
+        fn(self.inst, doer, actions, right)
+        doer.replica = nil
+        self.inst.replica = nil
+      end
+    elseif actiontype == "USEITEM" then
+      function comp:CollectUseItemActions(doer, target, actions, right)
+        self.inst.replica = self.inst.components
+        doer.replica = doer.components
+        target.replica = target.components
+        fn(self.inst, doer, target, actions, right)
+        doer.replica = nil
+        target.replica = nil
+        self.inst.replica = nil
+      end
+    elseif actiontype == "POINT" then
+      function comp:CollectPointActions(doer, pos, actions, right)
+        self.inst.replica = self.inst.components
+        doer.replica = doer.components
+        target.replica = target.components
+        fn(self.inst, doer, pos, actions, right)
+        doer.replica = nil
+        target.replica = nil
+        self.inst.replica = nil
+      end
+    elseif actiontype == "EQUIPPED" then
+      function comp:CollectEquippedActions(doer, target, actions, right)
+        self.inst.replica = self.inst.components
+        doer.replica = doer.components
+        target.replica = target.components
+        fn(self.inst, doer, target, actions, right)
+        doer.replica = nil
+        target.replica = nil
+        self.inst.replica = nil
+      end
+    elseif actiontype == "INVENTORY" then
+      function comp:CollectInventoryActions(doer, actions, right)
+        self.inst.replica = self.inst.components
+        doer.replica = doer.components
+        fn(self.inst, doer, actions, right)
+        doer.replica = nil
+        self.inst.replica = nil
+      end
+    elseif actiontype == "ISVALID" then
+      function comp:CollectIsValidActions(action, right)
+        self.inst.replica = self.inst.components
+        fn(self.inst, action, right)
+        self.inst.replica = nil
+      end
+    end
+  end
+
+  -- Create a custom action collection function on the component for the
+  -- specified action.
   pf.AddComponentAction = function(actiontype, component, fn)
     print("polyfill AddComponentAction")
     if TheSim:GetGameID() == "DS" then
       local comp = require("components/"..component)
       print(comp:GetDebugString())
-      if comp.BPX_COMPONENT_ACTIONS == nil then
-        comp.BPX_COMPONENT_ACTIONS = {}
-      end
-
-      if comp.BPX_COMPONENT_ACTIONS[actiontype] == nil then
-        comp.BPX_COMPONENT_ACTIONS[actiontype] = {}
-      end
-
-      table.insert(comp.BPX_COMPONENT_ACTIONS[actiontype], fn)
-      for key, _ in pairs(comp.BPX_COMPONENT_ACTIONS[actiontype]) do
-          print(key.."fn")
-      end
+      AddActionCollectorFn(actiontype, comp, fn)
     else
       env.AddComponentAction(actiontype, component, fn)
     end
-  end
-
-  local function AddBackCompatibleActions(self, inst)
-    print("ComponentPostInit fired")
-    function self:CollectSceneActions(doer, actions, right)
-      -- print("CollectSceneActions")
-      inst.replicas = inst.components
-      doer.replicas = doer.components
-      for _,func in pairs(self.BPX_COMPONENT_ACTIONS.SCENE) do
-        func(inst, doer, actions, right)
-      end
-      doer.replicas = nil
-      inst.replicas = nil
-    end
-
-    function self:CollectUseItemActions(doer, target, actions, right)
-      inst.replicas = inst.components
-      doer.replicas = doer.components
-      target.replicas = target.components
-      for _,func in pairs(self.BPX_COMPONENT_ACTIONS.USEITEM) do
-        func(inst, doer, target, actions, right)
-      end
-      doer.replicas = nil
-      target.replicas = nil
-      inst.replicas = nil
-    end
-
-    function self:CollectPointActions(doer, pos, actions, right)
-      inst.replicas = inst.components
-      doer.replicas = doer.components
-      target.replicas = target.components
-      for _,func in pairs(self.BPX_COMPONENT_ACTIONS.POINT) do
-        func(inst, doer, pos, actions, right)
-      end
-      doer.replicas = nil
-      target.replicas = nil
-      inst.replicas = nil
-    end
-
-    function self:CollectEquippedActions(doer, target, actions, right)
-      inst.replicas = inst.components
-      doer.replicas = doer.components
-      target.replicas = target.components
-      for _,func in pairs(self.BPX_COMPONENT_ACTIONS.EQUIPPED) do
-        func(inst, doer, target, actions, right)
-      end
-      doer.replicas = nil
-      target.replicas = nil
-      inst.replicas = nil
-    end
-
-    function self:CollectInventoryActions(doer, actions, right)
-      inst.replicas = inst.components
-      doer.replicas = doer.components
-      for _,func in pairs(self.BPX_COMPONENT_ACTIONS.INVENTORY) do
-        func(inst, doer, actions, right)
-      end
-      doer.replicas = nil
-      inst.replicas = nil
-    end
-
-    function self:CollectIsValidActions(action, right)
-      inst.replicas = inst.components
-      for _,func in pairs(self.BPX_COMPONENT_ACTIONS.ISVALID) do
-        func(inst, action, right)
-      end
-      inst.replicas = nil
-    end
-  end
-
-  pf.EnableBackCompatibleActions = function(component)
-    if TheSim:GetGameID() == "DS" then
-      print("EnableBackCompatibleActions called for "..component)
-      env.AddComponentPostInit(component, AddBackCompatibleActions)
-    end
-    -- No effect for DST
   end
 
   pf.AddModCharacter = function(name, gender)
@@ -473,6 +442,41 @@ local function loadfn(env)
     else
       return _G.SpringCombatMod(amount)
     end
+  end
+
+  -- Component APIs
+  if TheSim:GetGameID() == "DS" then
+    env.AddComponentPostInit("follower", function(self, inst)
+      function self:GetLeader()
+        -- print("GetLeader called")
+        return self.leader
+      end
+    end)
+    env.AddComponentPostInit("combat", function(self, inst)
+      function self:GetTarget()
+        -- print("GetTarget called")
+        return self.target
+      end
+    end)
+    env.AddComponentPostInit("eater", function(self, inst)
+      function self:SetDiet(foodgrouplist, ...)
+        local foodprefs = {}
+        for _,foodgroup in ipairs(foodgrouplist) do
+            for i=1,#foodgroup do
+              foodprefs[#foodprefs+1] = foodgroup[i]
+          end
+        end
+        self.foodprefs = foodprefs
+      end
+    end)
+    global("FOODGROUP")
+    _G.FOODGROUP = {
+      OMNI = { "MEAT", "VEGGIE", "INSECT", "SEEDS", "GENERIC" }
+    }
+    global("TheWorld")
+    _G.TheWorld = {
+      ismastersim = true
+    }
   end
 
   -- GLOBAL.global('pfv')

@@ -40,7 +40,6 @@ STRINGS.CHARACTERS.GENERIC.ANNOUNCE_ACTIONS = {
 
 ------------------------------------------------------
 -- Load the custom actions
-GLOBAL.bpx.EnableBackCompatibleActions("ttb_pet")
 modimport "scripts/actions/actions.lua"
 
 ------------------------------------------------------
