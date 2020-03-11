@@ -16,6 +16,9 @@ function TTB_Pet:CollectSceneActions(doer, actions, right)
     if right and self.inst.components.combat and self.inst.components.combat.target then
         table.insert(actions, ACTIONS.TTB_RETREAT)
     end
+    if not right then
+        table.insert(actions, ACTIONS.TTB_PETPET)
+    end
 end
 
 return TTB_Pet

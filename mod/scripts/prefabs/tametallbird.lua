@@ -240,6 +240,10 @@ local function OnHealthDelta(inst, data)
     end
 end
 
+local function GetPet(inst)
+    print("pet pet pet")
+end
+
 local function create_tame_tallbird()
     -- print("tametallbird - create_tame_tallbird")
 
@@ -278,6 +282,7 @@ local function create_tame_tallbird()
         GetPeepChance = GetPeepChance,
         UnfollowPlayer = UnfollowPlayer,
         Retreat = Retreat,
+        GetPet = GetPet,
     }
 
     ------------------------------------------

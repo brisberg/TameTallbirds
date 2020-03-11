@@ -26,10 +26,12 @@ STRINGS.CHARACTERS.GENERIC.DESCRIBE.TAMETALLBIRD = languageStrings.TAMETALLBIRD_
 STRINGS.ACTIONS.TTB_STAYHERE = languageStrings.STAY_ACTION.NAME
 STRINGS.ACTIONS.TTB_FOLLOW = languageStrings.FOLLOW_ACTION.NAME
 STRINGS.ACTIONS.TTB_RETREAT = languageStrings.RETREAT_ACTION.NAME
+STRINGS.ACTIONS.TTB_PETPET = languageStrings.PET_ACTION.NAME
 STRINGS.CHARACTERS.GENERIC.ANNOUNCE_ACTIONS = {
     TTB_STAYHERE = languageStrings.STAY_ACTION.ANNOUNCE,
     TTB_FOLLOW = languageStrings.FOLLOW_ACTION.ANNOUNCE,
     TTB_RETREAT = languageStrings.RETREAT_ACTION.ANNOUNCE,
+    TTB_PETPET = languageStrings.PET_ACTION.ANNOUNCE,
 }
 
 ------------------------------------------------------
@@ -39,6 +41,39 @@ ActionHandler = GLOBAL.ActionHandler
 
 AddStategraphActionHandler("wilson",ActionHandler(GLOBAL.ACTIONS.TTB_STAYHERE))
 AddStategraphActionHandler("wilson",ActionHandler(GLOBAL.ACTIONS.TTB_FOLLOW))
+
+local pet_state = GLOBAL.State({
+    name = "ttb_petpet",
+    tags = {"notalking", "busy"},
+
+    onenter = function(inst)
+        inst.components.locomotor:Stop()
+
+        inst.AnimState:PlayAnimation("punch")
+        inst.SoundEmitter:PlaySound("dontstarve/wilson/attack_whoosh")
+
+        -- inst:FacePoint(Point(inst.components.combat.target.Transform:GetWorldPosition()))
+    end,
+
+    timeline =
+    {
+        GLOBAL.TimeEvent(8*GLOBAL.FRAMES, function(inst)
+            print("petpet timeline perform action")
+            inst.PerformBufferedAction()
+        end),
+    },
+
+    events =
+    {
+        GLOBAL.EventHandler("animover", function(inst)
+            print("petpet anim over")
+            inst.sg:GoToState("idle")
+        end ),
+    },
+})
+
+AddStategraphState("wilson", pet_state)
+AddStategraphActionHandler("wilson",ActionHandler(GLOBAL.ACTIONS.TTB_PETPET, "ttb_petpet"))
 
 ------------------------------------------------------
 -- Tuning Values for Tame Tallbirds

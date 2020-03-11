@@ -31,4 +31,10 @@ return {
         -- Spoken command to a pet to "Retreat from combat"
         ANNOUNCE = "Get out of there!",
     },
+    PET_ACTION = {
+        -- Display name for leftclick "Pet Tame Tallbird" action
+        NAME = "Pet",
+        -- Spoken to a cute pet
+        ANNOUNCE = "So cute!",
+    },
 }

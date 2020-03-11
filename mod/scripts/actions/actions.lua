@@ -71,3 +71,22 @@ ACTIONS.TTB_RETREAT.fn = function(act)
 
     return true
 end
+
+-- Pet Action
+ACTIONS.TTB_PETPET = {
+    id = "TTB_PETPET",
+    priority = 2,
+    strfn = nil,
+    testfn = nil,
+    instant = false,
+    rmb = false,
+    distance = 2,
+}
+
+ACTIONS.TTB_PETPET.fn = function(act)
+    -- print("Running the TTB_PETPET act fn")
+    -- act.doer.components.talker:Say(STRINGS.CHARACTERS.GENERIC.ANNOUNCE_ACTIONS.TTB_PETPET)
+    act.target.userfunctions.GetPet(act.target)
+
+    return true
+end
