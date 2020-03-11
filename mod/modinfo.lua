@@ -5,7 +5,7 @@ name = "Tame Tallbirds"
 description = "Full-grown Tallbirds raised by the player will be friendly."
 
 author = "Keidence"
-version = "1.04"
+version = "1.06"
 forumthread = "None"
 icon_atlas = "modicon.xml"
 icon = "modicon.tex"
@@ -15,7 +15,8 @@ icon = "modicon.tex"
 dont_starve_compatible = true
 reign_of_giants_compatible = true
 shipwrecked_compatible = true
-porkland_compatible = true
+hamlet_compatible = true
+dst_compatible = false
 
 api_version = 6
 --------------------------------------------------
