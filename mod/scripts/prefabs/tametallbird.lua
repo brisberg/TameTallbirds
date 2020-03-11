@@ -264,15 +264,9 @@ local function create_tame_tallbird()
 
     MakeCharacterPhysics(inst, 10, .5)
 
-    if IsDLCEnabled(CAPY_DLC) then
+    if IsDLCEnabled(CAPY_DLC) or IsDLCEnabled(PORKLAND_DLC) then
         MakePoisonableCharacter(inst)
     end
-
-    inst.Physics:SetCollisionGroup(COLLISION.CHARACTERS)
-    inst.Physics:ClearCollisionMask()
-    inst.Physics:CollidesWith(COLLISION.WORLD)
-    inst.Physics:CollidesWith(COLLISION.OBSTACLES)
-    inst.Physics:CollidesWith(COLLISION.CHARACTERS)
 
     inst.Transform:SetFourFaced()
 
