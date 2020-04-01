@@ -121,6 +121,7 @@ configuration_options =
         options = {
             {description = "中文", data = "zh"},
             {description = "繁體中文", data = "zh-TM"},
+            {description = "Español", data = "es"},
             {description = "English", data = "en-us"},
             {description = "한국어", data = "ko"},
             {description = "Français", data = "fr"},
