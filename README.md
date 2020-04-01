@@ -5,6 +5,9 @@ Ever raised a Tallbird? Probably not because in the base game raised Tallbirds a
 
 Когда-либо поднимал Талльберд? Наверное, не потому, что в базовой игре поднятые Tallbirds враждебны и не очень полезны. Tame Tallbirds пытается исправить это, сделав Tallbirds поднятым игроком лояльными питомцами и потенциальными боевыми союзниками.
 
+曾经养过高脚鸟吗？在基本游戏中饲养的高脚鸟是敌对的，没有多少用处。 ”驯服高脚鸟”试图通过解决这个问题,让玩家养成的高脚鸟成为忠实的宠物和战友。
+注意：中文需要启用中文字体修改，例如 [url=http://steamcommunity.com/sharedfiles/filedetails/?id=874857181]Chinese中文支持[/url].
+
 Tame Tallbirds:
 [list]
 [*] Have similar combat stats to wild Tallbirds
