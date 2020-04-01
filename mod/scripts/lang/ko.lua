@@ -19,4 +19,16 @@ return {
         -- Spoken command to a pet to "Stay here"
         ANNOUNCE = "여기서 기다려.",
     },
+    FOLLOW_ACTION = {
+        -- Display name for Right-Click "Follow" action
+        NAME = "좇다",
+        -- Spoken command to a pet to "Follow Me"
+        ANNOUNCE = "가자 큰 녀석!",
+    },
+    RETREAT_ACTION = {
+        -- Display name for Right-Click "Retreat" action
+        NAME = "물러가다",
+        -- Spoken command to a pet to "Retreat from combat"
+        ANNOUNCE = "돌아와!",
+    },
 }

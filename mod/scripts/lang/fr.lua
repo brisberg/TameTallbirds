@@ -19,4 +19,16 @@ return {
         -- Spoken command to a pet to "Stay here"
         ANNOUNCE = "Reste ici!",
     },
+    FOLLOW_ACTION = {
+        -- Display name for Right-Click "Follow" action
+        NAME = "Suivre",
+        -- Spoken command to a pet to "Follow Me"
+        ANNOUNCE = "Allons Grand Mec!",
+    },
+    RETREAT_ACTION = {
+        -- Display name for Right-Click "Retreat" action
+        NAME = "Reculer",
+        -- Spoken command to a pet to "Retreat from combat"
+        ANNOUNCE = "Éloignez-vous de là!",
+    },
 }

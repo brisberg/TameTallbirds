@@ -23,7 +23,7 @@ return {
         -- Display name for Right-Click "Follow" action
         NAME = "Follow",
         -- Spoken command to a pet to "Follow Me"
-        ANNOUNCE = "Lets go Big Guy!",
+        ANNOUNCE = "Let's go Big Guy!",
     },
     RETREAT_ACTION = {
         -- Display name for Right-Click "Retreat" action
