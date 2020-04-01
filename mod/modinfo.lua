@@ -123,6 +123,7 @@ configuration_options =
             {description = "繁體中文", data = "zh-TM"},
             {description = "English", data = "en-us"},
             {description = "한국어", data = "ko"},
+            {description = "Français", data = "fr"},
             {description = "русский", data = "ru"},
         },
         default = "en-us",
