@@ -122,6 +122,7 @@ configuration_options =
             {description = "中文", data = "zh"},
             {description = "繁體中文", data = "zh-TM"},
             {description = "English", data = "en-us"},
+            {description = "한국어", data = "ko"},
             {description = "русский", data = "ru"},
         },
         default = "en-us",
